@@ -1,0 +1,24 @@
+{
+  "name": "lwc-vite",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "dev:native-shadow": "echo 'To use native shadow, set disableSyntheticShadowSupport: true in vite.config.js'"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "@lwc/synthetic-shadow": "^9.0.2",
+    "@salesforce-ux/design-system": "^2.29.0",
+    "lightning-base-components": "^1.28.15-alpha",
+    "lwc": "^9.0.2",
+    "vite": "^7.3.1",
+    "vite-plugin-lwc": "^4.1.0"
+  }
+}
