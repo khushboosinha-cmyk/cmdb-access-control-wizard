@@ -10,6 +10,10 @@ export default defineConfig({
           dir: path.resolve('./src/modules')
         },
         {
+          name: '@salesforce/gate/bc.260.enableComboboxElementInternals',
+          path: path.resolve('./src/shim/gateComboboxElementInternalsClosed.js')
+        },
+        {
           npm: 'lightning-base-components'
         }
       ],
