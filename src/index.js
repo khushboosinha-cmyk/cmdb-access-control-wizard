@@ -4,14 +4,17 @@ import '@lwc/synthetic-shadow';
 import { createElement } from 'lwc';
 import App from 'main/app';
 
-// Create the app component
-const app = createElement('main-app', {
-    is: App
-});
-
-// Mount the app to the DOM immediately (non-blocking: do not wait for icons)
-document.querySelector('#app').appendChild(app);
-document.getElementById('app').classList.add('is-ready');
+// Create and mount the app component
+try {
+    const app = createElement('main-app', {
+        is: App
+    });
+    document.querySelector('#app').appendChild(app);
+} catch (err) {
+    console.error('[LWC bootstrap] Failed to mount app:', err);
+} finally {
+    document.getElementById('app')?.classList.add('is-ready');
+}
 
 // Load icon template modules in the background. lightning-icon will request them
 // on demand; this preloads so they're likely ready when the first icons render.
