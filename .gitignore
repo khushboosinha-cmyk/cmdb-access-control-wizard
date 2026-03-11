@@ -1,37 +1,17 @@
 # Dependencies
 node_modules/
 
-# Build outputs
+# Build
 dist/
 dist-ssr/
-*.local
 src/generated/
 
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
-.DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
-
-# Logs
-logs
-*.log
-npm-debug.log*
-
-# Environment variables
+# Environment
 .env
-.env.local
 .env.*.local
 
-# Testing
-coverage/
-*.lcov
+# OS
+.DS_Store
 
-# Temporary files
-*.tmp
-*.temp
+# Logs
+*.log
