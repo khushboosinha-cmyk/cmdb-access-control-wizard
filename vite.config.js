@@ -20,6 +20,8 @@ export default defineConfig({
       // Enable synthetic shadow (like Salesforce platform)
       // false = use synthetic shadow, true = use native shadow
       disableSyntheticShadowSupport: false,
+      // Required for router: dynamic <lwc:component lwc:is={componentName}>
+      enableDynamicComponents: true,
       exclude: [path.resolve('./index.html'), path.resolve('./src/generated')]
     })
   ],
