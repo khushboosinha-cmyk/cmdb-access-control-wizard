@@ -34,7 +34,7 @@ The demo app showcases various Lightning Base Components including:
 ## Project Structure
 
 ```
-lwc-vite/
+salesforce-ui/
 ├── src/
 │   ├── modules/
 │   │   └── demo/
