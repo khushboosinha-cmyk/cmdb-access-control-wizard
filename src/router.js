@@ -3,11 +3,13 @@
  * No page refresh; back/forward supported.
  */
 
+const DEFAULT_TITLE = 'LWC Vite Demo';
+
 const routes = [
-  { path: '/', component: 'page-home' },
-  { path: '/icons', component: 'page-icon-test' },
-  { path: '/settings', component: 'page-settings' },
-  { path: '/users/:id', component: 'page-user' },
+  { path: '/', component: 'page-home', title: 'Home' },
+  { path: '/icons', component: 'page-icon-test', title: 'Icons' },
+  { path: '/settings', component: 'page-settings', title: 'Settings' },
+  { path: '/users/:id', component: 'page-user', title: (params) => `User ${params.id}` },
 ];
 
 const listeners = new Set();
@@ -34,8 +36,16 @@ function matchRoute(path) {
   return null;
 }
 
+function getTitleForRoute(route) {
+  if (!route?.title) return DEFAULT_TITLE;
+  return typeof route.title === 'function'
+    ? route.title(route.params || {})
+    : route.title;
+}
+
 function notify() {
   const route = matchRoute(window.location.pathname);
+  document.title = getTitleForRoute(route);
   listeners.forEach((cb) => cb(route));
 }
 
@@ -50,7 +60,9 @@ export function getCurrentRoute() {
 
 export function subscribe(callback) {
   listeners.add(callback);
-  callback(matchRoute(window.location.pathname));
+  const route = matchRoute(window.location.pathname);
+  document.title = getTitleForRoute(route);
+  callback(route);
 
   return () => listeners.delete(callback);
 }
