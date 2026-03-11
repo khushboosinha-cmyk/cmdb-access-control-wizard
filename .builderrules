@@ -2,6 +2,34 @@
 
 ---
 
+## TEMPLATE STRUCTURE (where to add components)
+
+- **Route-level views** → `src/modules/page/<name>/` → tag `page-<name>`. Register in `src/router.js` and in `main/app/app.js` (`ROUTE_COMPONENTS`; optionally `ROUTE_TO_NAV_PAGE` / `NAV_PAGE_TO_PATH` for nav).
+- **Reusable UI** → `src/modules/ui/<name>/` → tag `ui-<name>`. Use inside pages or other components.
+- **Do not add custom components under `main/`** (app shell only) or **`lightning/`** (reserved for base components and icon templates).
+
+---
+
+## UI CODE GUIDELINES
+
+### Modular Component Design
+
+**Decouple your UI into independent, single-responsibility components.** 
+Focus on creating a highly reusable and maintainable codebase by breaking complex layouts into smaller "atomic" or "molecular" LWCs.
+
+### Formatting Rules
+
+* Always prioritize readability and standard Salesforce design patterns.
+* Never use `!important`. 
+* Never override SLDS classes in your CSS.
+* Do not use inline style attributes - use utility classes or component CSS files.
+
+### LWC Framework
+
+If you run into errors with the LWC framework or LWR runtime, use the MCP server and selectively use tools to best address your issue.
+
+---
+
 ## DESIGN SYSTEM CONTEXT
 
 This project uses two complementary design system indexes:
@@ -44,28 +72,6 @@ Before writing ANY UI code, complete this checklist **IN ORDER**:
           **If NO** → Proceed to step 5.
 
 5. **[ ] Use a hard-coded CSS value** - Only when no component, utility class, or styling hook exists.
-
----
-
-## UI CODE GUIDELINES
-
-### Modular Component Design
-
-**Decouple your UI into independent, single-responsibility components.** 
-Focus on creating a highly reusable and maintainable codebase by breaking complex layouts into smaller "atomic" or "molecular" LWCs.
-
-### Formatting Rules
-
-* Always prioritize readability and standard Salesforce design patterns.
-* Never use `!important`. 
-* Never override SLDS classes in your CSS.
-* Do not use inline style attributes - use utility classes or component CSS files.
-
-### LWC Framework
-
-If you run into errors with the LWC framework or LWR runtime, use the MCP server and selectively use tools to best address your issue.
-
----
 
 ### Lightning Base Component and Component Blueprints
 

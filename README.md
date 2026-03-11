@@ -1,170 +1,141 @@
-# LWC + Vite POC
+# Salesforce UI — LWC Starter Template
 
-This is a proof-of-concept project demonstrating the integration of:
-- **Vite** - Fast build tool
-- **LWC** (Lightning Web Components) - Component framework
-- **vite-plugin-lwc** - Vite plugin for LWC support
-- **lightning-base-components** - Salesforce's component library
-- **SLDS** (@salesforce-ux/design-system) - Salesforce Lightning Design System
+A **starter template** for prototyping and developing Salesforce experiences locally. Built with **LWC** (Lightning Web Components), **Vite**, **SLDS** (Salesforce Lightning Design System), and **lightning-base-components**, so you get fast builds, hot reload, and a setup that aligns with the Salesforce platform (synthetic shadow, base components, design tokens).
 
-## Features
+## Who this is for
 
-The demo app showcases various Lightning Base Components including:
+- Developers prototyping Salesforce UIs locally before or alongside platform deployment  
+- Teams designing or evaluating experiences with LWC and SLDS  
+- Anyone who wants a local dev environment that matches Salesforce behavior (synthetic shadow, global SLDS styles, Lightning Base Components)
 
-### Input Components
-- Text Input
-- Email Input
-- Phone Number Input
-- Date Picker
+## What you get
 
-### Selection Components
-- Checkbox Group
-- Radio Group
-- Combobox
-- Toggle Switch
+- **App shell** — Header, global navigation, theme switcher (light/dark, SLDS 1/2), and panel layout  
+- **Client-side routing** — Declarative routes in `src/router.js` with path params (e.g. `/users/:id`), History API, no full page reload  
+- **SLDS + Lightning Base Components** — Design system and Salesforce component library wired and ready to use  
+- **Synthetic Shadow DOM** — Matches Salesforce platform behavior so styles and DOM semantics align with production  
+- **Icon setup** — Prebuild script and reserved `lightning/` namespace for SLDS icons; generated modules in `src/generated/`  
+- **Example pages** — Home, Settings, Icons, and a sample parameterized page (`/users/:id`). See `src/modules/page/` and `src/modules/ui/` for patterns.
 
-### Other Components
-- Slider Control
-- Text Area
-- Various Button Variants (Base, Brand, Success, Neutral, Destructive)
-- Icon Buttons
-- Badges
-- Loading Spinner
+## Quick start
 
-## Project Structure
+```bash
+npm install
+npm run dev
+```
+
+Dev server runs at **http://localhost:3000**. Icons are generated on first run (and when you run `build`). To build and preview a production bundle:
+
+```bash
+npm run build
+npm run preview
+```
+
+## Project structure
 
 ```
 salesforce-ui/
 ├── src/
 │   ├── modules/
-│   │   ├── main/
-│   │   │   └── app/             # App shell (main-app)
-│   │   ├── page/                # Route-level views (page-*)
+│   │   ├── main/                  # App shell (main-*)
+│   │   │   ├── app/               # Root app, route rendering
+│   │   │   ├── globalShell/       # Layout wrapper
+│   │   │   ├── globalHeader/      # Top bar
+│   │   │   ├── globalNavigation/ # Nav links
+│   │   │   ├── panel/             # Side panel
+│   │   │   └── themeSwitcher/     # SLDS version + dark mode
+│   │   ├── page/                  # Route-level views (page-*)
 │   │   │   ├── home/
-│   │   │   ├── user/
+│   │   │   ├── user/              # e.g. /users/:id
 │   │   │   ├── settings/
 │   │   │   └── iconTest/
-│   │   ├── ui/                  # Reusable building blocks (ui-*)
+│   │   ├── ui/                    # Reusable building blocks (ui-*)
 │   │   │   └── example/
-│   │   └── lightning/            # Reserved — do not use
-│   ├── router.js
-│   └── index.js                 # App entry point
-├── index.html                   # HTML entry point
-├── vite.config.js               # Vite configuration
+│   │   └── lightning/             # Reserved — do not use
+│   ├── generated/                 # Generated icon modules (do not edit)
+│   ├── router.js                  # Route definitions and navigation
+│   ├── slds-loader.js             # SLDS CSS loading
+│   └── index.js                   # App entry point
+├── scripts/
+│   └── prebuild-icons.mjs         # Icon codegen (run via npm scripts)
+├── index.html
+├── vite.config.js
 └── package.json
 ```
 
 ### Component namespaces
 
-This template uses **folder-based namespaces** so component roles are obvious. LWC turns the first folder under `src/modules/` into the tag prefix.
+Folder-based namespaces under `src/modules/` define the LWC tag prefix:
 
-| Folder   | Tag prefix | Use for |
-|----------|------------|--------|
-| **page/** | `page-*`   | Route-level views (one per URL). e.g. `page-user` → `/users/:id`. |
-| **ui/**   | `ui-*`     | Reusable building blocks (cards, buttons, modals, form controls). Used inside pages or other components. |
-| **main/** | `main-*`   | App shell only (e.g. `main-app`). Not for feature pages. |
-| **lightning/** | — | **Do not use.** Reserved for lightning-base-components and required template setup (e.g. icon templates). |
+| Folder        | Tag prefix | Use for |
+|---------------|------------|--------|
+| **main/**     | `main-*`   | App shell only (e.g. `main-app`, `main-global-header`). Not for feature pages. |
+| **page/**     | `page-*`   | Route-level views (one per URL). e.g. `page-user` → `/users/:id`. |
+| **ui/**       | `ui-*`     | Reusable building blocks (cards, buttons, modals). Used inside pages or other components. |
+| **lightning/**| —          | **Do not use.** Reserved for lightning-base-components and icon templates. |
 
-Only add components under **page/** or **ui/**; do not use **lightning/** (reserved for the template and lightning-base-components).
+Only add components under **page/** or **ui/**. Do not add custom components under **lightning/**.
 
-**Examples:** Add `src/modules/page/dashboard/` → use in router as `page-dashboard`, route e.g. `/dashboard`. Add `src/modules/ui/card/` → use in templates as `<ui-card>`. Keep **page/** for full-screen views and **ui/** for smaller, reusable pieces.
+**Examples:** Add `src/modules/page/dashboard/` → register in router and app, use as `page-dashboard` on e.g. `/dashboard`. Add `src/modules/ui/card/` → use in templates as `<ui-card>`.
 
-## Running the Project
+## Using this as a template
 
-### Development Mode
-```bash
-npm run dev
-```
-This will start the Vite dev server on http://localhost:3000 and automatically open your browser.
+1. Clone or copy the repo, then `npm install` and `npm run dev`.
+2. **Add a page:** Create a folder under `src/modules/page/<name>/`, then:
+   - Add a route in `src/router.js` (e.g. `{ path: '/dashboard', component: 'page-dashboard', title: 'Dashboard' }`).
+   - In `src/modules/main/app/app.js`, import the component and add it to `ROUTE_COMPONENTS` (and optionally to `ROUTE_TO_NAV_PAGE` / `NAV_PAGE_TO_PATH` if it should appear in the global nav).
+3. **Add a reusable component:** Create a folder under `src/modules/ui/<name>/` and use it as `<ui-<name>>` in any page or other component.
+4. Follow the namespace rules above and the SLDS/LWC conventions referenced in this repo (e.g. `.cursor/rules` if present).
 
-### Build for Production
-```bash
-npm run build
-```
+## Routing
 
-### Preview Production Build
-```bash
-npm run preview
-```
+The app uses a small client-side router in `src/router.js`:
 
-## How It Works
+- **Declarative routes** — Array of `{ path, component, title }`; `title` can be a string or function of route params.
+- **Path params** — Use `:id` (e.g. `/users/:id`); params are available to the page component via `getCurrentRoute()` from `src/router.js`.
+- **Navigation** — Use `navigate(path)` from the router; the app shell subscribes to route changes and renders the matching `page-*` component.
+- **History** — Uses the History API; back/forward work without full page reload.
 
-1. **Vite Configuration**: The `vite.config.js` file configures Vite to work with LWC using the `vite-plugin-lwc` plugin.
+## Tech stack and dependencies
 
-2. **LWC Components**: Components are organized in the `src/modules` directory following LWC naming conventions (namespace/componentName).
+- **vite** — Build tool and dev server  
+- **vite-plugin-lwc** — LWC support for Vite  
+- **lwc** — Lightning Web Components framework  
+- **@lwc/synthetic-shadow** — Synthetic shadow DOM (Salesforce-like)  
+- **lightning-base-components** — Salesforce component library  
+- **@salesforce-ux/design-system** — SLDS (styles, tokens, components)
 
-3. **Synthetic Shadow DOM**: Configured to use synthetic shadow DOM (like Salesforce platform) instead of native shadow DOM, allowing global styles to penetrate component boundaries.
+## Shadow DOM (synthetic vs native)
 
-4. **SLDS Styling**: The Salesforce Lightning Design System provides the visual styling framework, loaded globally to work with synthetic shadow.
+This template uses **Synthetic Shadow DOM** so behavior and styling match the Salesforce platform.
 
-5. **Lightning Base Components**: Pre-built Salesforce components provide form inputs, buttons, and other UI elements.
+| Feature        | Synthetic Shadow (default) | Native Shadow   |
+|----------------|----------------------------|-----------------|
+| Platform match | Matches Salesforce          | Different       |
+| Global styles  | Penetrate components       | Blocked         |
+| DOM queries    | Can query inside components| Cannot query in |
+| `shadowRoot`   | `null`                     | ShadowRoot      |
 
-## Component Interaction
+**Verify:** In the browser console at http://localhost:3000 run `document.querySelector('main-app').shadowRoot` — `null` means synthetic shadow is active.
 
-The app component demonstrates:
-- Two-way data binding with tracked properties
-- Event handling for various input types
-- Dynamic rendering of component states
-- Form value collection and logging
+**Switch to native shadow:** In `vite.config.js` set `disableSyntheticShadowSupport: true` in the LWC plugin options.
 
-Click the "Base Button" to see all collected form values in the console!
+**Why synthetic?** Matches Salesforce platform behavior, allows global SLDS styles to apply, simplifies migration of components to the platform, and keeps DOM inspectable for tests and tooling.
 
-## Dependencies
+## Icons
 
-- `vite`: Fast build tool
-- `vite-plugin-lwc`: LWC plugin for Vite
-- `lwc`: Lightning Web Components framework
-- `lightning-base-components`: Salesforce component library
-- `@salesforce-ux/design-system`: Salesforce design system
+SLDS icons are generated by a prebuild step. Run `npm run dev` or `npm run build` so `scripts/prebuild-icons.mjs` runs and updates `src/generated/`. The reserved `lightning/` namespace is used for icon SVG templates; do not add your own components there.
 
-## Shadow DOM Configuration
+## Conventions and design system
 
-This project is configured to use **Synthetic Shadow DOM** to match the Salesforce platform behavior:
+The project follows SLDS and LWC best practices: prefer Lightning Base Components, then SLDS utility classes, then styling hooks for customisation. For detailed guidance (e.g. tokens, components, accessibility), see the [Lightning Design System](https://lightningdesignsystem.com) and [Lightning Web Components](https://developer.salesforce.com/docs/component-library/documentation/en/lwc) documentation. This repo may include additional conventions (e.g. in `.cursor/rules`).
 
-### Synthetic Shadow vs Native Shadow
+## Deployment and platform
 
-| Feature | Synthetic Shadow (Current) | Native Shadow |
-|---------|---------------------------|---------------|
-| Platform Match | ✅ Matches Salesforce | ❌ Different from platform |
-| Global Styles | ✅ Penetrate components | ❌ Blocked by shadow boundary |
-| DOM Queries | ✅ Can query inside components | ❌ Cannot query inside |
-| shadowRoot | Returns `null` | Returns ShadowRoot object |
-| Performance | Slightly slower | Faster |
-| CSS Isolation | Partial | Complete |
+This template is for **local development and prototyping**. Deploying to the Salesforce platform (e.g. as an LWC-based experience or in a specific product) follows standard Salesforce deployment and may require product-specific configuration; it is out of scope for this README.
 
-### Verifying Shadow Mode
+## References
 
-Open the browser console at http://localhost:3000 and run:
-```javascript
-// Quick check
-document.querySelector('demo-app').shadowRoot
-// Returns null = Synthetic Shadow ✅
-// Returns object = Native Shadow ❌
-```
-
-Or copy and run the contents of `verify-shadow.js` in the console for a complete test.
-
-### Switching Shadow Modes
-
-To switch between shadow modes, edit `vite.config.js`:
-
-```javascript
-// For Synthetic Shadow (Salesforce platform-like) - CURRENT
-disableSyntheticShadowSupport: false
-
-// For Native Shadow (standard web components)
-disableSyntheticShadowSupport: true
-```
-
-### Why Synthetic Shadow?
-
-1. **Platform Accuracy**: Salesforce uses synthetic shadow on their platform
-2. **Style Inheritance**: Global SLDS styles can penetrate into components
-3. **DOM Access**: Allows testing tools and scripts to query component internals
-4. **Migration Path**: Easier to migrate existing Salesforce components
-
-## Notes
-
-This POC demonstrates that all these technologies can work together seamlessly in a local development environment, providing a modern development experience with hot module replacement, fast builds, and access to the full Salesforce component ecosystem.
-
-The synthetic shadow configuration ensures that your local development matches the actual Salesforce platform behavior, making the transition from local to platform deployment smoother.
+- [Lightning Design System](https://lightningdesignsystem.com)  
+- [Lightning Web Components (Salesforce)](https://developer.salesforce.com/docs/component-library/overview/components)  
+- [LWC (OSS) / vite-plugin-lwc](https://github.com/salesforce/lwc) — for local LWC + Vite behavior
