@@ -1,54 +1,21 @@
 <template>
-    <div class="slds-container_x-large slds-container_center slds-m-top_large">
-        <!-- Header -->
-        <div class="slds-text-heading_large slds-text-align_center slds-m-bottom_large">
-            LWC + Vite + Lightning Base Components Demo
-        </div>
+    <!-- Global shell: top, edge to edge, height by content -->
+    <main-global-shell current-page={currentNavPage} onnavigate={handleNavNavigate} onpanelselect={handlePanelSelect}>
+    </main-global-shell>
 
-        <!-- Nav -->
-        <div class="slds-m-bottom_large slds-text-align_center">
-            <lightning-button
-                label="Home"
-                icon-name="utility:home"
-                onclick={handleNavigateHome}>
-            </lightning-button>
-            <lightning-button
-                class="slds-m-left_small"
-                label="Icons"
-                icon-name="utility:image"
-                onclick={handleNavigateIcons}>
-            </lightning-button>
-            <lightning-button
-                class="slds-m-left_small"
-                label="Settings"
-                icon-name="utility:settings"
-                onclick={handleNavigateSettings}>
-            </lightning-button>
-            <lightning-button
-                class="slds-m-left_small"
-                label="User 42"
-                icon-name="utility:user"
-                onclick={handleNavigateUser}>
-            </lightning-button>
-            <lightning-button
-                class="slds-m-left_small"
-                label={sldsToggleLabel}
-                icon-name="utility:palette"
-                onclick={handleToggleSLDS}>
-            </lightning-button>
-            <template if:true={showDarkModeButton}>
-                <lightning-button
-                    class="slds-m-left_small"
-                    label={darkModeLabel}
-                    icon-name="utility:light_bulb"
-                    onclick={handleToggleDarkMode}>
-                </lightning-button>
+    <!-- Main content: fills available height, contents scroll -->
+    <div class="app-main">
+        <div class="app-main__inner slds-container_x-large slds-container_center slds-p-around_medium">
+            <!-- Router outlet -->
+            <template lwc:if={componentCtor}>
+                <lwc:component lwc:is={componentCtor} onnavigateback={handleNavigateBack}></lwc:component>
             </template>
         </div>
-
-        <!-- Router outlet -->
-        <template lwc:if={componentCtor}>
-            <lwc:component lwc:is={componentCtor} onnavigateback={handleNavigateBack}></lwc:component>
-        </template>
+        <main-theme-switcher
+            slds-version={_sldsVersion}
+            dark-mode={_darkMode}
+            ontoggleslds={handleToggleSLDS}
+            ontoggledarkmode={handleToggleDarkMode}>
+        </main-theme-switcher>
     </div>
 </template>

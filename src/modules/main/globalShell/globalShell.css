@@ -1,0 +1,4 @@
+/* Stack header and nav with no gap (lightning-layout-item padding="none" handles this) */
+.global-shell {
+    display: block;
+}

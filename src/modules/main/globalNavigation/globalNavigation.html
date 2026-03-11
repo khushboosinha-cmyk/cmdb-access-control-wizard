@@ -1,0 +1,48 @@
+<template>
+    <div class="slds-context-bar">
+        <div class="slds-context-bar__primary">
+            <div
+                class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger_click slds-no-hover">
+                <div class="slds-context-bar__icon-action slds-p-left_none">
+                    <lightning-button-menu icon-name="utility:apps" title="Open Menu" variant="bare" icon-size="medium">
+                        <lightning-menu-item label="Home" value="home" onselect={handleMenuNavigate}></lightning-menu-item>
+                        <lightning-menu-item label="Icons" value="icons" onselect={handleMenuNavigate}></lightning-menu-item>
+                        <lightning-menu-item label="Settings" value="settings" onselect={handleMenuNavigate}></lightning-menu-item>
+                        <lightning-menu-item label="User 42" value="user" onselect={handleMenuNavigate}></lightning-menu-item>
+                    </lightning-button-menu>
+                </div>
+                <span class="slds-context-bar__label-action slds-context-bar__app-name">
+                    <span class="slds-truncate" title="Salesforce UI Starter Kit">Salesforce UI Starter Kit</span>
+                </span>
+            </div>
+        </div>
+        <nav class="slds-context-bar__secondary" role="navigation" aria-label="App navigation">
+            <ul class="slds-grid slds-container_fluid">
+                <li class={homeTabClass}>
+                    <a href="/" class="slds-context-bar__label-action" title="Home" onclick={handleHomeClick}>
+                        <span class="slds-assistive-text" if:true={isHomePage}>Current Page:</span>
+                        <span class="slds-truncate" title="Home">Home</span>
+                    </a>
+                </li>
+                <li class={iconsTabClass}>
+                    <a href="/icons" class="slds-context-bar__label-action" title="Icons" onclick={handleIconsClick}>
+                        <span class="slds-assistive-text" if:true={isIconsPage}>Current Page:</span>
+                        <span class="slds-truncate" title="Icons">Icons</span>
+                    </a>
+                </li>
+                <li class={settingsTabClass}>
+                    <a href="/settings" class="slds-context-bar__label-action" title="Settings" onclick={handleSettingsClick}>
+                        <span class="slds-assistive-text" if:true={isSettingsPage}>Current Page:</span>
+                        <span class="slds-truncate" title="Settings">Settings</span>
+                    </a>
+                </li>
+                <li class={userTabClass}>
+                    <a href="/users/42" class="slds-context-bar__label-action" title="User 42" onclick={handleUserClick}>
+                        <span class="slds-assistive-text" if:true={isUserPage}>Current Page:</span>
+                        <span class="slds-truncate" title="User 42">User 42</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</template>

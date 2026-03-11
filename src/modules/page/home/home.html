@@ -1,214 +1,187 @@
 <template>
-    <div class="slds-container_x-large slds-container_center slds-m-top_large">
-        <lightning-card title="Lightning Base Components Showcase" icon-name="standard:lightning_component">
-            <div class="slds-p-horizontal_medium">
+    <div class="slds-container_x-large slds-container_center slds-m-top_large slds-grid slds-grid_vertical">
+        <!-- Input Components -->
+        <lightning-card title="Input Components" class="slds-m-bottom_large">
+            <div class="slds-p-around_small">
+                <div class="slds-grid slds-wrap slds-gutters">
+                    <div class="slds-col slds-size_1-of-2">
+                        <lightning-input
+                            label="Text Input"
+                            placeholder="Enter some text..."
+                            value={inputValue}
+                            onchange={handleInputChange}>
+                        </lightning-input>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2">
+                        <lightning-input
+                            type="email"
+                            label="Email Input"
+                            placeholder="user@example.com">
+                        </lightning-input>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2 slds-m-top_medium">
+                        <lightning-input
+                            type="tel"
+                            label="Phone Number"
+                            placeholder="(555) 555-5555">
+                        </lightning-input>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2 slds-m-top_medium">
+                        <lightning-input
+                            type="date"
+                            label="Date Picker"
+                            value={dateValue}
+                            onchange={handleDateChange}>
+                        </lightning-input>
+                    </div>
+                </div>
+            </div>
+        </lightning-card>
 
-                <!-- Input Fields Section -->
-                <div class="slds-section slds-is-open">
-                    <h3 class="slds-section__title">
-                        <span class="slds-truncate">Input Components</span>
-                    </h3>
-                    <div class="slds-section__content">
-                        <div class="slds-grid slds-wrap slds-gutters">
-                            <div class="slds-col slds-size_1-of-2">
-                                <lightning-input
-                                    label="Text Input"
-                                    placeholder="Enter some text..."
-                                    value={inputValue}
-                                    onchange={handleInputChange}>
-                                </lightning-input>
-                            </div>
-                            <div class="slds-col slds-size_1-of-2">
-                                <lightning-input
-                                    type="email"
-                                    label="Email Input"
-                                    placeholder="user@example.com">
-                                </lightning-input>
-                            </div>
-                            <div class="slds-col slds-size_1-of-2 slds-m-top_medium">
-                                <lightning-input
-                                    type="tel"
-                                    label="Phone Number"
-                                    placeholder="(555) 555-5555">
-                                </lightning-input>
-                            </div>
-                            <div class="slds-col slds-size_1-of-2 slds-m-top_medium">
-                                <lightning-input
-                                    type="date"
-                                    label="Date Picker"
-                                    value={dateValue}
-                                    onchange={handleDateChange}>
-                                </lightning-input>
-                            </div>
+        <!-- Selection Components -->
+        <lightning-card title="Selection Components" class="slds-m-bottom_large">
+            <div class="slds-p-around_small">
+                <div class="slds-grid slds-wrap slds-gutters">
+                    <div class="slds-col slds-size_1-of-2">
+                        <lightning-checkbox-group
+                            label="Checkbox Group"
+                            options={checkboxOptions}
+                            value={checkboxGroupValues}
+                            onchange={handleCheckboxChange}>
+                        </lightning-checkbox-group>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2">
+                        <lightning-radio-group
+                            label="Radio Group"
+                            options={radioOptions}
+                            value={selectedRadioValue}
+                            onchange={handleRadioChange}>
+                        </lightning-radio-group>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2 slds-m-top_medium">
+                        <lightning-combobox
+                            label="Combobox"
+                            placeholder="Select an option"
+                            options={comboboxOptions}
+                            value={selectedComboboxValue}
+                            onchange={handleComboboxChange}>
+                        </lightning-combobox>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2 slds-m-top_medium">
+                        <div class="slds-form-element">
+                            <label class="slds-form-element__label">Toggle Switch</label>
+                            <lightning-input
+                                type="toggle"
+                                label="Enable Feature"
+                                checked={toggleValue}
+                                onchange={handleToggleChange}>
+                            </lightning-input>
                         </div>
                     </div>
                 </div>
+            </div>
+        </lightning-card>
 
-                <!-- Selection Components -->
-                <div class="slds-section slds-is-open slds-m-top_large">
-                    <h3 class="slds-section__title">
-                        <span class="slds-truncate">Selection Components</span>
-                    </h3>
-                    <div class="slds-section__content">
-                        <div class="slds-grid slds-wrap slds-gutters">
-                            <div class="slds-col slds-size_1-of-2">
-                                <lightning-checkbox-group
-                                    label="Checkbox Group"
-                                    options={checkboxOptions}
-                                    value={checkboxGroupValues}
-                                    onchange={handleCheckboxChange}>
-                                </lightning-checkbox-group>
-                            </div>
-                            <div class="slds-col slds-size_1-of-2">
-                                <lightning-radio-group
-                                    label="Radio Group"
-                                    options={radioOptions}
-                                    value={selectedRadioValue}
-                                    onchange={handleRadioChange}>
-                                </lightning-radio-group>
-                            </div>
-                            <div class="slds-col slds-size_1-of-2 slds-m-top_medium">
-                                <lightning-combobox
-                                    label="Combobox"
-                                    placeholder="Select an option"
-                                    options={comboboxOptions}
-                                    value={selectedComboboxValue}
-                                    onchange={handleComboboxChange}>
-                                </lightning-combobox>
-                            </div>
-                            <div class="slds-col slds-size_1-of-2 slds-m-top_medium">
-                                <div class="slds-form-element">
-                                    <label class="slds-form-element__label">Toggle Switch</label>
-                                    <lightning-input
-                                        type="toggle"
-                                        label="Enable Feature"
-                                        checked={toggleValue}
-                                        onchange={handleToggleChange}>
-                                    </lightning-input>
-                                </div>
-                            </div>
-                        </div>
+        <!-- Other Input Types -->
+        <lightning-card title="Other Input Types" class="slds-m-bottom_large">
+            <div class="slds-p-around_small">
+                <div class="slds-m-bottom_medium">
+                    <lightning-slider
+                        label="Slider Control"
+                        value={sliderValue}
+                        min="0"
+                        max="100"
+                        step="5"
+                        onchange={handleSliderChange}>
+                    </lightning-slider>
+                    <div class="slds-text-body_small slds-m-top_x-small">
+                        Current Value: {sliderValue}
                     </div>
                 </div>
+                <lightning-textarea
+                    label="Text Area"
+                    placeholder="Enter multiple lines of text..."
+                    value={textAreaValue}
+                    onchange={handleTextAreaChange}>
+                </lightning-textarea>
+            </div>
+        </lightning-card>
 
-                <!-- Slider and Textarea -->
-                <div class="slds-section slds-is-open slds-m-top_large">
-                    <h3 class="slds-section__title">
-                        <span class="slds-truncate">Other Input Types</span>
-                    </h3>
-                    <div class="slds-section__content">
-                        <div class="slds-m-bottom_medium">
-                            <lightning-slider
-                                label="Slider Control"
-                                value={sliderValue}
-                                min="0"
-                                max="100"
-                                step="5"
-                                onchange={handleSliderChange}>
-                            </lightning-slider>
-                            <div class="slds-text-body_small slds-m-top_x-small">
-                                Current Value: {sliderValue}
-                            </div>
-                        </div>
-                        <lightning-textarea
-                            label="Text Area"
-                            placeholder="Enter multiple lines of text..."
-                            value={textAreaValue}
-                            onchange={handleTextAreaChange}>
-                        </lightning-textarea>
-                    </div>
+        <!-- Button Variants -->
+        <lightning-card title="Button Variants" class="slds-m-bottom_large">
+            <div class="slds-p-around_small">
+                <div class="slds-button-group">
+                    <lightning-button
+                        label="Base Button"
+                        onclick={handleButtonClick}>
+                    </lightning-button>
+                    <lightning-button
+                        variant="brand"
+                        label="Brand Button"
+                        onclick={handleBrandButton}>
+                    </lightning-button>
+                    <lightning-button
+                        variant="success"
+                        label="Success Button"
+                        onclick={handleSuccessButton}>
+                    </lightning-button>
+                    <lightning-button
+                        variant="neutral"
+                        label="Neutral Button"
+                        onclick={handleNeutralButton}>
+                    </lightning-button>
+                    <lightning-button
+                        variant="destructive"
+                        label="Destructive Button">
+                    </lightning-button>
                 </div>
+            </div>
+        </lightning-card>
 
-                <!-- Buttons Section -->
-                <div class="slds-section slds-is-open slds-m-top_large">
-                    <h3 class="slds-section__title">
-                        <span class="slds-truncate">Button Variants</span>
-                    </h3>
-                    <div class="slds-section__content">
-                        <div class="slds-button-group">
-                            <lightning-button
-                                label="Base Button"
-                                onclick={handleButtonClick}>
-                            </lightning-button>
-                            <lightning-button
-                                variant="brand"
-                                label="Brand Button"
-                                onclick={handleBrandButton}>
-                            </lightning-button>
-                            <lightning-button
-                                variant="success"
-                                label="Success Button"
-                                onclick={handleSuccessButton}>
-                            </lightning-button>
-                            <lightning-button
-                                variant="neutral"
-                                label="Neutral Button"
-                                onclick={handleNeutralButton}>
-                            </lightning-button>
-                            <lightning-button
-                                variant="destructive"
-                                label="Destructive Button">
-                            </lightning-button>
-                        </div>
-                    </div>
+        <!-- Icon Buttons -->
+        <lightning-card title="Icon Buttons" class="slds-m-bottom_large">
+            <div class="slds-p-around_small">
+                <div class="slds-button-group">
+                    <lightning-button-icon
+                        icon-name="utility:download"
+                        alternative-text="Download"
+                        title="Download">
+                    </lightning-button-icon>
+                    <lightning-button-icon
+                        icon-name="utility:edit"
+                        alternative-text="Edit"
+                        title="Edit">
+                    </lightning-button-icon>
+                    <lightning-button-icon
+                        icon-name="utility:delete"
+                        alternative-text="Delete"
+                        title="Delete">
+                    </lightning-button-icon>
+                    <lightning-button-icon
+                        icon-name="utility:refresh"
+                        alternative-text="Refresh"
+                        title="Refresh">
+                    </lightning-button-icon>
                 </div>
+            </div>
+        </lightning-card>
 
-                <!-- Icon Buttons -->
-                <div class="slds-section slds-is-open slds-m-top_large">
-                    <h3 class="slds-section__title">
-                        <span class="slds-truncate">Icon Buttons</span>
-                    </h3>
-                    <div class="slds-section__content">
-                        <div class="slds-button-group">
-                            <lightning-button-icon
-                                icon-name="utility:download"
-                                alternative-text="Download"
-                                title="Download">
-                            </lightning-button-icon>
-                            <lightning-button-icon
-                                icon-name="utility:edit"
-                                alternative-text="Edit"
-                                title="Edit">
-                            </lightning-button-icon>
-                            <lightning-button-icon
-                                icon-name="utility:delete"
-                                alternative-text="Delete"
-                                title="Delete">
-                            </lightning-button-icon>
-                            <lightning-button-icon
-                                icon-name="utility:refresh"
-                                alternative-text="Refresh"
-                                title="Refresh">
-                            </lightning-button-icon>
-                        </div>
-                    </div>
+        <!-- Badges -->
+        <lightning-card title="Badges" class="slds-m-bottom_large">
+            <div class="slds-p-around_small">
+                <lightning-badge label="Default Badge"></lightning-badge>
+                <lightning-badge label="Success Badge" class="slds-m-left_small slds-badge_lightest"></lightning-badge>
+                <lightning-badge label="Warning Badge" class="slds-m-left_small"></lightning-badge>
+                <lightning-badge label="Error Badge" class="slds-m-left_small"></lightning-badge>
+            </div>
+        </lightning-card>
+
+        <!-- Loading Spinner -->
+        <lightning-card title="Loading Spinner" class="slds-m-bottom_large">
+            <div class="slds-p-around_small">
+                <div class="slds-align_absolute-center slds-is-relative spinner-demo">
+                    <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
                 </div>
-
-                <!-- Badge Examples -->
-                <div class="slds-section slds-is-open slds-m-top_large">
-                    <h3 class="slds-section__title">
-                        <span class="slds-truncate">Badges</span>
-                    </h3>
-                    <div class="slds-section__content">
-                        <lightning-badge label="Default Badge"></lightning-badge>
-                        <lightning-badge label="Success Badge" class="slds-m-left_small slds-badge_lightest"></lightning-badge>
-                        <lightning-badge label="Warning Badge" class="slds-m-left_small"></lightning-badge>
-                        <lightning-badge label="Error Badge" class="slds-m-left_small"></lightning-badge>
-                    </div>
-                </div>
-
-                <!-- Spinner Example -->
-                <div class="slds-section slds-is-open slds-m-top_large slds-m-bottom_large">
-                    <h3 class="slds-section__title">
-                        <span class="slds-truncate">Loading Spinner</span>
-                    </h3>
-                    <div class="slds-section__content">
-                        <div class="slds-align_absolute-center" style="height: 100px; position: relative;">
-                            <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
-                        </div>
-                    </div>
-                </div>
-
             </div>
         </lightning-card>
 

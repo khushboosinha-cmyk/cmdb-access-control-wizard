@@ -1,7 +1,16 @@
 :host {
-   display: block;
-   background-color: var(--slds-g-color-surface-2, #f3f3f3);
-   min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: var(--slds-g-color-surface-2, #f3f3f3);
+}
+
+/* Main content area: fills remaining height, scrolls */
+.app-main {
+    flex: 1 1 0;
+    min-height: 0;
+    overflow: auto;
+    position: relative;
 }
 
 .slds-section {

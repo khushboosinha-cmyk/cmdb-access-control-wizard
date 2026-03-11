@@ -1,6 +1,6 @@
 import { LightningElement, track } from 'lwc';
 import { subscribe, navigate } from '../../../router';
-import { toggleSLDS, activeSLDSVersion } from '../../../slds-loader';
+import { toggleSLDS, activeSLDSVersion, activateSLDS1, activateSLDS2 } from '../../../slds-loader';
 import Home from 'page/home';
 import IconTest from 'page/iconTest';
 import Settings from 'page/settings';
@@ -13,33 +13,66 @@ const ROUTE_COMPONENTS = {
     'page-user': User,
 };
 
+/** Map route component name to global nav "page" value for active tab */
+const ROUTE_TO_NAV_PAGE = {
+    'page-home': 'home',
+    'page-icon-test': 'icons',
+    'page-settings': 'settings',
+    'page-user': 'user'
+};
+
+/** Map nav page to path for router */
+const NAV_PAGE_TO_PATH = {
+    home: '/',
+    icons: '/icons',
+    settings: '/settings',
+    user: '/users/42'
+};
+
+const STORAGE_KEY_SLDS_VERSION = 'slds-ui-slds-version';
+const STORAGE_KEY_DARK_MODE = 'slds-ui-dark-mode';
+
 export default class App extends LightningElement {
     @track route;
     @track _sldsVersion = 2;
     @track _darkMode = false;
-
-    get sldsToggleLabel() {
-        return this._sldsVersion === 2 ? 'Switch to SLDS 1' : 'Switch to SLDS 2';
-    }
-
-    get showDarkModeButton() {
-        return this._sldsVersion === 2;
-    }
-
-    get darkModeLabel() {
-        return this._darkMode ? 'Light Mode' : 'Dark Mode';
-    }
 
     get componentCtor() {
         const name = this.route?.component;
         return name ? ROUTE_COMPONENTS[name] ?? null : null;
     }
 
+    get currentNavPage() {
+        const name = this.route?.component;
+        return name ? (ROUTE_TO_NAV_PAGE[name] ?? 'home') : 'home';
+    }
+
     connectedCallback() {
+        this._restorePreferences();
         this._sldsVersion = activeSLDSVersion();
         this.unsubscribe = subscribe((route) => {
             this.route = route;
         });
+    }
+
+    _restorePreferences() {
+        const savedVersion = localStorage.getItem(STORAGE_KEY_SLDS_VERSION);
+        if (savedVersion === '1' || savedVersion === '2') {
+            if (savedVersion === '1') {
+                activateSLDS1();
+            } else {
+                activateSLDS2();
+            }
+        }
+        const savedDarkMode = localStorage.getItem(STORAGE_KEY_DARK_MODE);
+        const version = savedVersion === '1' ? 1 : 2;
+        if (savedDarkMode === 'true' && version === 2) {
+            this._darkMode = true;
+            document.body.classList.add('slds-color-scheme_dark');
+        } else if (savedDarkMode === 'false') {
+            this._darkMode = false;
+            document.body.classList.remove('slds-color-scheme_dark');
+        }
     }
 
     disconnectedCallback() {
@@ -49,28 +82,28 @@ export default class App extends LightningElement {
     handleToggleSLDS() {
         toggleSLDS();
         this._sldsVersion = activeSLDSVersion();
+        localStorage.setItem(STORAGE_KEY_SLDS_VERSION, String(this._sldsVersion));
         if (this._sldsVersion !== 2 && this._darkMode) {
             this._darkMode = false;
             document.body.classList.remove('slds-color-scheme_dark');
+            localStorage.setItem(STORAGE_KEY_DARK_MODE, 'false');
         }
     }
 
     handleToggleDarkMode() {
         this._darkMode = !this._darkMode;
         document.body.classList.toggle('slds-color-scheme_dark', this._darkMode);
+        localStorage.setItem(STORAGE_KEY_DARK_MODE, String(this._darkMode));
     }
 
-    handleNavigateHome() {
-        navigate('/');
+    handleNavNavigate(event) {
+        const page = event.detail?.page;
+        const path = page ? NAV_PAGE_TO_PATH[page] : '/';
+        navigate(path);
     }
-    handleNavigateIcons() {
-        navigate('/icons');
-    }
-    handleNavigateSettings() {
-        navigate('/settings');
-    }
-    handleNavigateUser() {
-        navigate('/users/42');
+
+    handlePanelSelect() {
+        // Panel open/close can be wired later
     }
 
     handleNavigateBack() {
