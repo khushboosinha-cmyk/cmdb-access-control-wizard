@@ -35,7 +35,10 @@ export default defineConfig({
   appType: 'spa',
   server: {
     port: 3000,
-    open: true,
+    open: false,
+  },
+  optimizeDeps: {
+    exclude: ['lightning/modal', 'lightning/primitiveOverlay', 'lightning/overlayUtils', 'lightning/modalBase', 'lightning/utilsPrivate'],
   },
   resolve: {
     alias: {
