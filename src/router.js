@@ -1,16 +1,12 @@
 /**
  * Mini router for LWC – declarative routes, dynamic params, History API.
  * No page refresh; back/forward supported.
+ * Routes are defined in routes.config.js.
  */
 
-const DEFAULT_TITLE = 'Salesforce';
+import { routes } from './routes.config.js';
 
-const routes = [
-  { path: '/', component: 'page-home', title: 'Home' },
-  { path: '/icons', component: 'page-icon-test', title: 'Icons' },
-  { path: '/settings', component: 'page-settings', title: 'Settings' },
-  { path: '/users/:id', component: 'page-user', title: (params) => `User ${params.id}` },
-];
+const DEFAULT_TITLE = 'Salesforce';
 
 const listeners = new Set();
 

@@ -1,4 +1,5 @@
 import { LightningElement, track } from 'lwc';
+import DemoModal from 'ui/demoModal';
 
 export default class Home extends LightningElement {
     @track inputValue = '';
@@ -90,5 +91,12 @@ export default class Home extends LightningElement {
 
     handleBrandButton() {
         alert('Brand button clicked!');
+    }
+
+    handleOpenModal() {
+        DemoModal.open({
+            size: 'medium',
+            label: 'Demo Modal',
+        });
     }
 }

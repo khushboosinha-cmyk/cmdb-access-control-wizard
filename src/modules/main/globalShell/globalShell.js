@@ -2,6 +2,7 @@ import { LightningElement, api } from 'lwc';
 
 export default class GlobalShell extends LightningElement {
     @api currentPage = 'home';
+    @api navItems = [];
 
     handleNavigate(event) {
         this.dispatchEvent(

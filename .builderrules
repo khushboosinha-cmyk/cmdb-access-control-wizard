@@ -92,7 +92,7 @@ Salesforce's official LWC components with JavaScript APIs, props, and events.
 * `<lightning-card>` - Container with header, body, footer slots
 * `<lightning-combobox>` - Dropdown selection
 * `<lightning-datatable>` - Data tables with sorting
-* LightningModal (extend from `lightning/modal`) - Modal dialogs
+* LightningModal (extend from `lightning/modal`) - Modal dialogs. **Use `src/modules/ui/demoModal/` as the reference:** extend LightningModal; compose with `lightning-modal-header`, `lightning-modal-body`, `lightning-modal-footer`; open via `MyModal.open({ size, label })`. Do not build modals from raw `slds-modal` markup.
 
 #### B. Component Blueprints (HTML/CSS Patterns)
 Vanilla HTML markup with SLDS CSS classes for when LBCs don't exist or aren't suitable.

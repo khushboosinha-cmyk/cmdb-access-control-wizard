@@ -2,6 +2,7 @@ import { LightningElement, api, track } from 'lwc';
 
 export default class GlobalNavigation extends LightningElement {
     @api currentPage = 'home';
+    @api navItems = [];
     @track isWaffleMenuOpen = false;
 
     get waffleDropdownTriggerClass() {
@@ -9,81 +10,40 @@ export default class GlobalNavigation extends LightningElement {
         return this.isWaffleMenuOpen ? `${base} slds-is-open` : base;
     }
 
-    get isHomePage() {
-        return this.currentPage === 'home';
+    /** Nav items with isActive and tabClass derived from currentPage (for template) */
+    get navItemsWithActive() {
+        return (this.navItems || []).map((item) => {
+            const isActive = item.page === this.currentPage;
+            const base = 'slds-context-bar__item';
+            return {
+                ...item,
+                isActive,
+                tabClass: isActive ? `${base} slds-is-active` : base,
+            };
+        });
     }
 
-    get isIconsPage() {
-        return this.currentPage === 'icons';
-    }
-
-    get isSettingsPage() {
-        return this.currentPage === 'settings';
-    }
-
-    get isUserPage() {
-        return this.currentPage === 'user';
-    }
-
-    get homeTabClass() {
-        return `slds-context-bar__item ${this.isHomePage ? 'slds-is-active' : ''}`;
-    }
-
-    get iconsTabClass() {
-        return `slds-context-bar__item ${this.isIconsPage ? 'slds-is-active' : ''}`;
-    }
-
-    get settingsTabClass() {
-        return `slds-context-bar__item ${this.isSettingsPage ? 'slds-is-active' : ''}`;
-    }
-
-    get userTabClass() {
-        return `slds-context-bar__item ${this.isUserPage ? 'slds-is-active' : ''}`;
-    }
-
-    handleHomeClick(event) {
+    handleNavItemClick(event) {
         event.preventDefault();
-        this.dispatchEvent(new CustomEvent('navigate', {
-            detail: { page: 'home' },
-            bubbles: true,
-            composed: true
-        }));
-    }
-
-    handleIconsClick(event) {
-        event.preventDefault();
-        this.dispatchEvent(new CustomEvent('navigate', {
-            detail: { page: 'icons' },
-            bubbles: true,
-            composed: true
-        }));
-    }
-
-    handleSettingsClick(event) {
-        event.preventDefault();
-        this.dispatchEvent(new CustomEvent('navigate', {
-            detail: { page: 'settings' },
-            bubbles: true,
-            composed: true
-        }));
-    }
-
-    handleUserClick(event) {
-        event.preventDefault();
-        this.dispatchEvent(new CustomEvent('navigate', {
-            detail: { page: 'user' },
-            bubbles: true,
-            composed: true
-        }));
+        const page = event.currentTarget.dataset.page;
+        this.dispatchEvent(
+            new CustomEvent('navigate', {
+                detail: { page },
+                bubbles: true,
+                composed: true,
+            })
+        );
     }
 
     handleMenuNavigate(event) {
         const page = event.detail.value;
-        this.dispatchEvent(new CustomEvent('navigate', {
-            detail: { page },
-            bubbles: true,
-            composed: true
-        }));
+        this.dispatchEvent(
+            new CustomEvent('navigate', {
+                detail: { page },
+                bubbles: true,
+                composed: true,
+            })
+        );
     }
 
     handleWaffleOpen() {
@@ -98,11 +58,13 @@ export default class GlobalNavigation extends LightningElement {
         event.preventDefault();
         this.isWaffleMenuOpen = false;
         const page = event.currentTarget.dataset.value;
-        this.dispatchEvent(new CustomEvent('navigate', {
-            detail: { page },
-            bubbles: true,
-            composed: true
-        }));
+        this.dispatchEvent(
+            new CustomEvent('navigate', {
+                detail: { page },
+                bubbles: true,
+                composed: true,
+            })
+        );
     }
 
     handleWaffleMenuKeydown(event) {
@@ -171,7 +133,6 @@ export default class GlobalNavigation extends LightningElement {
 
     _handleDocumentClick(event) {
         const trigger = this.template.querySelector('[class*="slds-dropdown-trigger"]');
-        // Use composedPath() so we see the real click path across shadow boundaries (event.target is retargeted to host nodes)
         const path = event.composedPath ? event.composedPath() : [];
         const clickInsideTrigger = trigger && path.includes(trigger);
         if (trigger && !clickInsideTrigger) {

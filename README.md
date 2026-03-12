@@ -87,6 +87,8 @@ Only add components under **page/** or **ui/**. Do not add custom components und
 3. **Add a reusable component:** Create a folder under `src/modules/ui/<name>/` and use it as `<ui-<name>>` in any page or other component.
 4. Follow the namespace rules above and the SLDS/LWC conventions referenced in this repo (e.g. `.cursor/rules` if present).
 
+**Modals:** For modal dialogs, extend `LightningModal` from `lightning/modal` and use the in-repo example as your starting point: `src/modules/ui/demoModal/`. It shows the correct structure (header → body → footer with `lightning-modal-header`, `lightning-modal-body`, `lightning-modal-footer`) and opening via `MyModal.open({ size, label })`. Do not implement modals with raw SLDS modal markup.
+
 ## Routing
 
 The app uses a small client-side router in `src/router.js`:

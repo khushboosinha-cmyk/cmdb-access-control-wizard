@@ -1,11 +1,13 @@
 import { LightningElement, track } from 'lwc';
 import { subscribe, navigate } from '../../../router';
+import { routes } from '../../../routes.config';
 import { toggleSLDS, activeSLDSVersion, activateSLDS1, activateSLDS2 } from '../../../slds-loader';
 import Home from 'page/home';
 import IconTest from 'page/iconTest';
 import Settings from 'page/settings';
 import User from 'page/user';
 
+/** Option A: explicit registration – add one import + one entry here when adding a route */
 const ROUTE_COMPONENTS = {
     'page-home': Home,
     'page-icon-test': IconTest,
@@ -13,21 +15,20 @@ const ROUTE_COMPONENTS = {
     'page-user': User,
 };
 
-/** Map route component name to global nav "page" value for active tab */
-const ROUTE_TO_NAV_PAGE = {
-    'page-home': 'home',
-    'page-icon-test': 'icons',
-    'page-settings': 'settings',
-    'page-user': 'user'
-};
+/** Derived from routes.config: component name → nav page id */
+const ROUTE_TO_NAV_PAGE = Object.fromEntries(
+    routes.filter((r) => r.navPage).map((r) => [r.component, r.navPage])
+);
 
-/** Map nav page to path for router */
-const NAV_PAGE_TO_PATH = {
-    home: '/',
-    icons: '/icons',
-    settings: '/settings',
-    user: '/users/42'
-};
+/** Derived from routes.config: nav page id → path for navigate() */
+const NAV_PAGE_TO_PATH = Object.fromEntries(
+    routes.filter((r) => r.navPage).map((r) => [r.navPage, r.navPath ?? r.path])
+);
+
+/** Nav items for global navigation (tabs + waffle). From routes with navPage. */
+const NAV_ITEMS = routes
+    .filter((r) => r.navPage)
+    .map((r) => ({ page: r.navPage, label: r.navLabel, path: r.navPath ?? r.path }));
 
 const STORAGE_KEY_SLDS_VERSION = 'slds-ui-slds-version';
 const STORAGE_KEY_DARK_MODE = 'slds-ui-dark-mode';
@@ -47,6 +48,10 @@ export default class App extends LightningElement {
     get currentNavPage() {
         const name = this.route?.component;
         return name ? (ROUTE_TO_NAV_PAGE[name] ?? 'home') : 'home';
+    }
+
+    get navItems() {
+        return NAV_ITEMS;
     }
 
     connectedCallback() {
