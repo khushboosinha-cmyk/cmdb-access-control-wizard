@@ -3,6 +3,9 @@ import '@lwc/synthetic-shadow';
 
 import { createElement } from 'lwc';
 import App from 'main/app';
+import { initSldsFromStorage } from './slds-loader.js';
+
+await initSldsFromStorage();
 
 // Create and mount the app component
 try {

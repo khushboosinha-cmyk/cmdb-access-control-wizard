@@ -1,7 +1,7 @@
 import { LightningElement, track } from 'lwc';
 import { subscribe, navigate } from '../../../router';
 import { routes } from '../../../routes.config';
-import { toggleSLDS, activeSLDSVersion, activateSLDS1, activateSLDS2 } from '../../../slds-loader';
+import { toggleSLDS, activeSLDSVersion } from '../../../slds-loader';
 import Home from 'page/home';
 import IconTest from 'page/iconTest';
 import Settings from 'page/settings';
@@ -68,13 +68,6 @@ export default class App extends LightningElement {
 
     _restorePreferences() {
         const savedVersion = localStorage.getItem(STORAGE_KEY_SLDS_VERSION);
-        if (savedVersion === '1' || savedVersion === '2') {
-            if (savedVersion === '1') {
-                activateSLDS1();
-            } else {
-                activateSLDS2();
-            }
-        }
         const savedDarkMode = localStorage.getItem(STORAGE_KEY_DARK_MODE);
         const version = savedVersion === '1' ? 1 : 2;
         if (savedDarkMode === 'true' && version === 2) {
@@ -90,8 +83,8 @@ export default class App extends LightningElement {
         this.unsubscribe?.();
     }
 
-    handleToggleSLDS() {
-        toggleSLDS();
+    async handleToggleSLDS() {
+        await toggleSLDS();
         this._sldsVersion = activeSLDSVersion();
         localStorage.setItem(STORAGE_KEY_SLDS_VERSION, String(this._sldsVersion));
         if (this._sldsVersion !== 2 && this._darkMode) {

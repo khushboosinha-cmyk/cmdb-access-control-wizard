@@ -24,7 +24,7 @@ npm install
 npm run dev
 ```
 
-Dev server runs at **http://localhost:3000**. After `npm install`, **`postinstall`** fills **`public/slds/`** (SLDS 1 + SLDS 2 stylesheets under `styles/`, SLDS 1 `images/`; all gitignored). Icons for `<lightning-icon>` are generated on `dev` / `build`. To build and preview a production bundle:
+Dev server runs at **http://localhost:3000**. Global SLDS styles are resolved from **`@salesforce-ux/design-system`** and **`@salesforce-ux/design-system-2`** by Vite (hashed CSS in `dist/assets/` on build); see **`src/slds-loader.js`**. Icons for `<lightning-icon>` are generated on `dev` / `build`. To build and preview a production bundle:
 
 ```bash
 npm run build
@@ -53,12 +53,13 @@ salesforce-ui/
 │   │   │   └── example/
 │   │   └── lightning/             # Reserved — do not use
 │   ├── generated/                 # Generated icon modules (do not edit)
+│   ├── slds/
+│   │   └── slds1-url.js           # Lazy chunk: resolved URL for SLDS 1 stylesheet
 │   ├── router.js                  # Route definitions and navigation
-│   ├── slds-loader.js             # SLDS CSS loading
+│   ├── slds-loader.js             # SLDS stylesheet link injection, theme bootstrap, lazy SLDS 1
 │   └── index.js                   # App entry point
 ├── scripts/
-│   ├── prebuild-icons.mjs         # Icon codegen (run via npm scripts)
-│   └── sync-slds-css.mjs          # SLDS 1 styles+images, SLDS 2 CSS → public/ (postinstall / dev / build)
+│   └── prebuild-icons.mjs         # Icon codegen (run via npm scripts)
 ├── index.html
 ├── vite.config.js
 └── package.json
@@ -108,13 +109,17 @@ The app uses a small client-side router in `src/router.js`:
 - **lwc** — Lightning Web Components framework  
 - **@lwc/synthetic-shadow** — Synthetic shadow DOM (Salesforce-like)  
 - **lightning-base-components** — Salesforce component library  
-- **@salesforce-ux/design-system** — Classic SLDS; sync copies `assets/styles/salesforce-lightning-design-system.min.css` (only that stylesheet) and `assets/images/` → `public/slds/`  
-- **@salesforce-ux/design-system-2** — SLDS 2 / Cosmos (`dist/css/slds2.cosmos.css` → `public/slds/styles/slds2.cosmos.css`)  
-- **`npm run sync-slds-css`** and **`postinstall`** run that script. **`public/slds/`** is **gitignored**; version bumps show up in `package.json` / the lockfile only. **`public/images/`** (e.g. favicon `salesforce.svg`) stays in the repo as app-owned assets.
+- **@salesforce-ux/design-system** — Classic SLDS; Vite bundles `assets/styles/salesforce-lightning-design-system.min.css` (and nested `url(...)` assets) when SLDS 1 is loaded  
+- **@salesforce-ux/design-system-2** — SLDS 2 / Cosmos; Vite bundles `dist/css/slds2.cosmos.css` for the default theme  
+- **`public/images/`** (e.g. favicon `salesforce.svg`) stays in the repo as app-owned assets.
 
 ## SLDS 1 and SLDS 2
 
-The app loads **two** global stylesheets from `index.html` and toggles them via `src/slds-loader.js` (theme switcher): **SLDS 2** (`public/slds/styles/slds2.cosmos.css`) and **SLDS 1** (`public/slds/styles/salesforce-lightning-design-system.min.css`), plus SLDS 1 image assets under `public/slds/images/` for `url(...)` references in the SLDS 1 CSS. Icon templates come from **lightning-base-components** via `prebuild-icons.mjs`. Resync: `npm run sync-slds-css`. If you install with **`npm ci --ignore-scripts`**, run that (or `npm run dev` / `npm run build`) before loading the app.
+**SLDS 2** is the default. `src/index.js` awaits **`initSldsFromStorage()`** from **`src/slds-loader.js`** before mounting LWC so the correct theme is active on first paint (including when `localStorage` says the last session used SLDS 1).
+
+The loader injects **`<link rel="stylesheet" data-slds="...">`** elements and toggles the active sheet with the **`media`** attribute (`all` vs `not all`), matching the previous static-HTML behavior. Stylesheet URLs come from **`new URL(..., import.meta.url)`** pointing at files under **`node_modules/@salesforce-ux/...`** so Vite emits versioned CSS assets and rewrites nested **`url(...)`** references. **SLDS 1** is loaded **lazily** (dynamic `import()` of `src/slds/slds1-url.js`) until the user switches themes or a saved preference requires it—so the default bundle does not fetch classic SLDS until needed.
+
+Icon templates come from **lightning-base-components** via **`prebuild-icons.mjs`**.
 
 ## Shadow DOM (synthetic vs native)
 

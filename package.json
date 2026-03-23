@@ -5,11 +5,9 @@
   "main": "index.js",
   "scripts": {
     "clean": "rm -rf dist .vite node_modules",
-    "postinstall": "node scripts/sync-slds-css.mjs",
     "prebuild-icons": "node scripts/prebuild-icons.mjs",
-    "sync-slds-css": "node scripts/sync-slds-css.mjs",
-    "dev": "node scripts/prebuild-icons.mjs && node scripts/sync-slds-css.mjs && vite",
-    "build": "node scripts/prebuild-icons.mjs && node scripts/sync-slds-css.mjs && vite build",
+    "dev": "node scripts/prebuild-icons.mjs && vite",
+    "build": "node scripts/prebuild-icons.mjs && vite build",
     "preview": "vite preview",
     "dev:native-shadow": "echo 'To use native shadow, set disableSyntheticShadowSupport: true in vite.config.js'"
   },

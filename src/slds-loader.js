@@ -1,18 +1,74 @@
 /**
- * SLDS stylesheets are loaded as static <link> tags in index.html to avoid FOUC.
- * The active sheet is toggled via the media attribute:
- *   - media="" / "all"  → applied
- *   - media="not all"   → fetched but not applied
+ * SLDS global stylesheets are loaded as <link rel="stylesheet"> tags.
+ * Asset URLs use `new URL(..., import.meta.url)` so Vite emits hashed files and
+ * rewrites nested `url(...)` without the css?url → transform-only Rollup parse path
+ * that breaks when vite-plugin-lwc sits between vite:css and vite:css-post.
  *
- * LWC's CSS transformer rejects :root selectors, so SLDS cannot be imported
- * as an ES module — <link> tag injection is required.
+ * The active sheet is toggled via the link's media attribute:
+ *   - media="" / "all"  → applied
+ *   - media="not all"   → fetched but not applied (when both links exist)
+ *
+ * SLDS 2 is always loaded on startup. SLDS 1 is lazy-loaded when the user selects it
+ * or when localStorage says the last session used SLDS 1 (see initSldsFromStorage).
  */
+
+const slds2CssUrl = new URL(
+    '../node_modules/@salesforce-ux/design-system-2/dist/css/slds2.cosmos.css',
+    import.meta.url
+).href;
+
+const STORAGE_KEY_SLDS_VERSION = 'slds-ui-slds-version';
 
 const SLDS2_KEY = 'slds-plus';
 const SLDS1_KEY = 'salesforce-lightning-design-system';
 
+/** @type {Promise<string> | null} */
+let slds1UrlPromise = null;
+
 function getLink(key) {
     return document.querySelector(`link[data-slds="${key}"]`);
+}
+
+function ensureLink(key, href) {
+    let link = getLink(key);
+    if (!link) {
+        link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.setAttribute('data-slds', key);
+        link.href = href;
+        document.head.appendChild(link);
+    } else if (href && link.getAttribute('href') !== href) {
+        link.href = href;
+    }
+    return link;
+}
+
+/**
+ * Resolves the SLDS1 CSS asset URL and ensures a <link> exists.
+ * @returns {Promise<HTMLLinkElement>}
+ */
+export function ensureSlds1Loaded() {
+    if (!slds1UrlPromise) {
+        slds1UrlPromise = import('./slds/slds1-url.js').then((m) => m.default);
+    }
+    return slds1UrlPromise.then((href) => ensureLink(SLDS1_KEY, href));
+}
+
+/**
+ * Bootstrap: insert SLDS2, then load SLDS1 only if storage requests version 1.
+ * Call from src/index.js before mounting LWC (top-level await).
+ */
+export async function initSldsFromStorage() {
+    const slds2Link = ensureLink(SLDS2_KEY, slds2CssUrl);
+
+    const saved = localStorage.getItem(STORAGE_KEY_SLDS_VERSION);
+    if (saved === '1') {
+        const slds1Link = await ensureSlds1Loaded();
+        slds1Link.media = 'all';
+        slds2Link.media = 'not all';
+    } else {
+        slds2Link.media = 'all';
+    }
 }
 
 export function activateSLDS2() {
@@ -22,19 +78,26 @@ export function activateSLDS2() {
     if (slds1) slds1.media = 'not all';
 }
 
-export function activateSLDS1() {
+/**
+ * @returns {Promise<void>}
+ */
+export async function activateSLDS1() {
+    const slds1 = await ensureSlds1Loaded();
     const slds2 = getLink(SLDS2_KEY);
-    const slds1 = getLink(SLDS1_KEY);
     if (slds2) slds2.media = 'not all';
-    if (slds1) slds1.media = 'all';
+    slds1.media = 'all';
 }
 
-export function toggleSLDS() {
+/**
+ * @returns {Promise<void>}
+ */
+export async function toggleSLDS() {
     const slds2 = getLink(SLDS2_KEY);
     if (!slds2) return;
+
     const usingSlds2 = slds2.media !== 'not all';
     if (usingSlds2) {
-        activateSLDS1();
+        await activateSLDS1();
     } else {
         activateSLDS2();
     }

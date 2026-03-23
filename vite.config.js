@@ -28,6 +28,9 @@ export default defineConfig({
       exclude: [
         path.resolve('./index.html'),
         path.resolve('./src/generated'),
+        // Global SLDS from node_modules (new URL in slds-loader.js) must not pass through LWC:
+        // LWC rejects :root in this pipeline when synthetic shadow is enabled.
+        /(salesforce-lightning-design-system\.min\.css|slds2\.cosmos\.css)(\?.*)?$/,
         ...iconTemplateExcludeDirs,
       ],
     }),
@@ -43,6 +46,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@salesforce-ux/design-system': path.resolve('./node_modules/@salesforce-ux/design-system'),
+      '@salesforce-ux/design-system-2': path.resolve('./node_modules/@salesforce-ux/design-system-2'),
       ...iconTemplateAliases,
     },
   },
