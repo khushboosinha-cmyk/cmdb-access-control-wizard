@@ -1,5 +1,4 @@
 import { LightningElement, track } from 'lwc';
-import { navigate } from '../../../router';
 
 const STANDARD_ICONS = [
     'account', 'contact', 'lead', 'opportunity', 'case', 'task', 'event',
@@ -80,7 +79,4 @@ export default class IconTest extends LightningElement {
         return this.renderTime !== null ? `${this.renderTime} ms` : '—';
     }
 
-    handleBack() {
-        navigate('/');
-    }
 }

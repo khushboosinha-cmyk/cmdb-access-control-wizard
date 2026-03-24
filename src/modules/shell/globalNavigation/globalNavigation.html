@@ -5,11 +5,11 @@
                 class={waffleDropdownTriggerClass}
                 role="presentation">
                 <div class="slds-context-bar__icon-action">
-                    <shell-waffle
-                        title="Open App Launcher"
-                        assistive-text="Open App Launcher"
-                        onopen={handleWaffleOpen}>
-                    </shell-waffle>
+                    <lightning-dynamic-icon
+                        type="waffle"
+                        alternative-text="Application launcher"
+                        onclick={handleWaffleOpen}>
+                    </lightning-dynamic-icon>
                 </div>
                 <div
                     class="slds-dropdown slds-dropdown_left"

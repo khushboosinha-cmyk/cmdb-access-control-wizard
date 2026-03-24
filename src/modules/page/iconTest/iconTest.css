@@ -13,11 +13,9 @@
 /* ── Header ── */
 .page-header {
     display: flex;
-    align-items: center;
-    gap: var(--slds-g-spacing-3, 0.75rem);
+    flex-direction: column;
+    align-items: flex-start;
     margin-bottom: var(--slds-g-spacing-6, 2rem);
-    padding-bottom: var(--slds-g-spacing-4, 1rem);
-    border-bottom: 1px solid var(--slds-g-color-border-1, #c9c9c9);
 }
 
 .page-header__title {
@@ -31,21 +29,8 @@
     color: var(--slds-g-color-on-surface-1, #5c5c5c);
 }
 
-/* ── Section ── */
-.icon-section {
-    background-color: var(--slds-g-color-surface-1, #ffffff);
-    border: 1px solid var(--slds-g-color-border-1, #c9c9c9);
-    border-radius: var(--slds-g-radius-border-2, 0.5rem);
-    padding: var(--slds-g-spacing-5, 1.5rem);
-    margin-bottom: var(--slds-g-spacing-5, 1.5rem);
-}
-
-.icon-section__header {
-    display: flex;
-    align-items: center;
-    margin-bottom: var(--slds-g-spacing-4, 1rem);
-    padding-bottom: var(--slds-g-spacing-3, 0.75rem);
-    border-bottom: 1px solid var(--slds-g-color-border-1, #c9c9c9);
+.page-header__help {
+    color: var(--slds-g-color-on-surface-1, #5c5c5c);
 }
 
 /* ── Grid ── */
@@ -62,7 +47,7 @@
     align-items: center;
     gap: var(--slds-g-spacing-2, 0.5rem);
     padding: var(--slds-g-spacing-3, 0.75rem);
-    border-radius: var(--slds-g-radius-border-1, 0.25rem);
+    border-radius: var(--slds-g-radius-border-2, 0.5rem);
     transition: background-color 0.1s ease;
 }
 

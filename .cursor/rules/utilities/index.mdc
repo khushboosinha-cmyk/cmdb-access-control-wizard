@@ -1,5 +1,11 @@
 ---
 alwaysApply: false
+description: Use when choosing SLDS utility classes (spacing, layout, text, visibility, borders, lists) or deciding utility classes vs custom CSS in LWC HTML/CSS.
+globs:
+  - "src/**/*.html"
+  - "src/**/*.css"
+  - "src/**/*.js"
+  - "src/**/*.ts"
 ---
 # SLDS Utility Classes Index
 
