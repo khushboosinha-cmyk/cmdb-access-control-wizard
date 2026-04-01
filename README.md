@@ -1,4 +1,4 @@
-# Salesforce UI Starter Kit
+# Salesforce Design System 2 Starter Kit
 
 A **starter template** for prototyping and developing Salesforce experiences locally. Built with **LWC** (Lightning Web Components), **Vite**, **SLDS** (Salesforce Lightning Design System), and **lightning-base-components**, so you get fast builds, hot reload, and a setup that aligns with the Salesforce platform (synthetic shadow, base components, design tokens).
 
