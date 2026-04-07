@@ -153,26 +153,21 @@ The project follows SLDS and LWC best practices: prefer Lightning Base Component
 
 This template is for **local development and prototyping**. Deploying to the Salesforce platform (e.g. as an LWC-based experience or in a specific product) follows standard Salesforce deployment and may require product-specific configuration; it is out of scope for this README.
 
-### GitHub Pages via Actions
+### GitHub Pages
 
-This repo includes two GitHub Actions workflows for GitHub Pages:
+This repo does **not** use GitHub Actions for Pages. Publishing is **`npm run deploy`** only: a production build, then push **`dist/`** to the **`gh-pages`** branch on **`origin`** ([`gh-pages`](https://www.npmjs.com/package/gh-pages)).
 
-- `.github/workflows/pages-deploy.yml` - builds and deploys:
-  - production (`/`) from `main`
-  - branch previews (`/previews/<branch-slug>/`) for `feature/*`, `fix/*`, `prototype/*`
-  - PR previews (`/previews/pr-<number>/`) for PRs targeting `main`
-- `.github/workflows/pages-preview-cleanup.yml` - removes a branch preview path when a matching branch is deleted.
+**One-time setup**
 
-Required repository settings:
+1. Configure Git so you can **`git push` to `origin`**.
+2. Run **`npm run deploy`** once so branch **`gh-pages`** exists on the remote.
+3. On GitHub: **Settings → Pages** → **Build and deployment** → **Deploy from a branch** → Branch **`gh-pages`**, folder **`/` (root)** → Save.
 
-1. In **Settings -> Pages**, set **Source** to **GitHub Actions**.
-2. In **Settings -> Actions -> General -> Workflow permissions**, allow read/write permissions so workflows can publish Pages artifacts.
+**Ongoing:** run **`npm run deploy`** whenever you want to publish a new build.
 
-Expected URL patterns:
+After GitHub finishes publishing, find your live site URL on **Settings → Pages** (the hostname depends on your GitHub plan and organization settings).
 
-- Production: `https://<owner>.github.io/<repo>/`
-- Branch preview: `https://<owner>.github.io/<repo>/previews/<branch-slug>/`
-- PR preview: `https://<owner>.github.io/<repo>/previews/pr-<number>/`
+**Another remote or URL:** `npx gh-pages -d dist -o <remote-name>` or `npx gh-pages -d dist -r https://github.com/org/repo.git`.
 
 ## References
 

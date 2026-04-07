@@ -9,6 +9,7 @@
     "dev": "node scripts/prebuild-icons.mjs && vite",
     "build": "node scripts/prebuild-icons.mjs && vite build",
     "preview": "vite preview",
+    "deploy": "npm run build && gh-pages -d dist",
     "dev:native-shadow": "echo 'To use native shadow, set disableSyntheticShadowSupport: true in vite.config.js'"
   },
   "keywords": [],
@@ -23,5 +24,8 @@
     "lwc": "^9.0.2",
     "vite": "^7.3.1",
     "vite-plugin-lwc": "^4.1.0"
+  },
+  "devDependencies": {
+    "gh-pages": "^6.3.0"
   }
 }
