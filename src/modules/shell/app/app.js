@@ -1,5 +1,5 @@
 import { LightningElement, track } from 'lwc';
-import { subscribe, navigate } from '../../../router';
+import { subscribe, navigate, linkHref } from '../../../router';
 import { routes } from '../../../routes.config';
 import { toggleSLDS, activeSLDSVersion } from '../../../build/slds-loader';
 import Home from 'page/home';
@@ -30,9 +30,10 @@ const NAV_PAGE_TO_PATH = Object.fromEntries(
 );
 
 /** Nav items for global navigation (tabs + waffle). From routes with navPage. */
-const NAV_ITEMS = routes
-    .filter((r) => r.navPage)
-    .map((r) => ({ page: r.navPage, label: r.navLabel, path: r.navPath ?? r.path }));
+const NAV_ITEMS = routes.filter((r) => r.navPage).map((r) => {
+    const path = r.navPath ?? r.path;
+    return { page: r.navPage, label: r.navLabel, path, href: linkHref(path) };
+});
 
 const STORAGE_KEY_SLDS_VERSION = 'slds-ui-slds-version';
 const STORAGE_KEY_DARK_MODE = 'slds-ui-dark-mode';

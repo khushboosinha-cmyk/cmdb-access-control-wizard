@@ -155,7 +155,8 @@ This template is for **local development and prototyping**. Deploying to the Sal
 
 ### GitHub Pages
 
-This repo does **not** use GitHub Actions for Pages. Publishing is **`npm run deploy`** only: a production build, then push **`dist/`** to the **`gh-pages`** branch on **`origin`** ([`gh-pages`](https://www.npmjs.com/package/gh-pages)).
+Publishing is **`npm run deploy`** only: a **`build:gh-pages`** production build (hash-based client routes for static hosting), then push **`dist/`** to the **`gh-pages`** branch on **`origin`** ([`gh-pages`](https://www.npmjs.com/package/gh-pages)).
+This repo does not use GitHub Actions for Pages.
 
 **One-time setup**
 
@@ -166,6 +167,10 @@ This repo does **not** use GitHub Actions for Pages. Publishing is **`npm run de
 **Ongoing:** run **`npm run deploy`** whenever you want to publish a new build.
 
 After GitHub finishes publishing, find your live site URL on **Settings → Pages** (the hostname depends on your GitHub plan and organization settings).
+
+**Routing:** Default **`npm run dev`** and **`npm run build`** use normal path URLs (`/settings`). **`npm run deploy`** uses **`npm run build:gh-pages`**, which enables **hash URLs** (e.g. `…/your-repo/#/settings`) so refreshes and deep links work on GitHub Pages. Path-only bookmarks like `…/your-repo/settings` (no hash) will still 404 on Pages.
+
+**Preview locally:** **`npm run build`** then **`npm run preview`** exercises path routing. To preview the GitHub Pages bundle, run **`npm run build:gh-pages`** then **`npm run preview`**.
 
 **Another remote or URL:** `npx gh-pages -d dist -o <remote-name>` or `npx gh-pages -d dist -r https://github.com/org/repo.git`.
 

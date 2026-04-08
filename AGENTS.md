@@ -39,5 +39,5 @@ Extend `lightning/modal` and follow `**src/modules/ui/demoModal/`** as the refer
 
 ### Deployment (GitHub Pages)
 
-- **Only path:** **`npm run deploy`** — production build, then push **`dist/`** to **`gh-pages`** on **`origin`**. GitHub Pages **Source** must be **Deploy from a branch** → **`gh-pages`** (see README). There is no Actions-based Pages deploy in this repo.
+- **Only path:** **`npm run deploy`** — runs **`build:gh-pages`** (hash routing for static hosting), then pushes **`dist/`** to **`gh-pages`** on **`origin`**. Default **`npm run build`** / **`npm run dev`** keep path-based routing. GitHub Pages **Source** must be **Deploy from a branch** → **`gh-pages`** (see README). There is no Actions-based Pages deploy in this repo.
 - For another push target, `gh-pages` accepts **`-o <remote>`** or **`-r <url>`**; mention when the user asks.

@@ -21,7 +21,7 @@
                         <template for:each={navItems} for:item="item">
                             <li key={item.page} class="slds-dropdown__item" role="presentation">
                                 <a
-                                    href={item.path}
+                                    href={item.href}
                                     role="menuitem"
                                     tabindex="-1"
                                     data-value={item.page}
@@ -42,7 +42,7 @@
                 <template for:each={navItemsWithActive} for:item="item">
                     <li key={item.page} class={item.tabClass}>
                         <a
-                            href={item.path}
+                            href={item.href}
                             class="slds-context-bar__label-action"
                             title={item.label}
                             data-page={item.page}
