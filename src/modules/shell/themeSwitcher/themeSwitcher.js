@@ -1,11 +1,10 @@
-import { LightningElement, api, track } from 'lwc';
+import { LightningElement, api } from 'lwc';
 
 export default class ThemeSwitcher extends LightningElement {
     @api sldsVersion = 2;
     @api darkMode = false;
-    @track isCardOpen = false;
-    /** True while exit animation runs so the card stays in the DOM. */
-    @track isCardClosing = false;
+    isCardOpen = false;
+    isCardClosing = false;
 
     get sldsToggleLabel() {
         return this.sldsVersion === 2 ? 'Switch to SLDS 1' : 'Switch to SLDS 2';

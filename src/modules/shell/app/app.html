@@ -10,17 +10,15 @@
                 <div class="app-body__scroll-wrapper">
                     <div class="app-main">
                         <div class="app-main__inner">
-                        <!-- Router outlet -->
-                        <template lwc:if={componentCtor}>
+                            <!-- Router outlet -->
                             <lwc:component lwc:is={componentCtor} onnavigateback={handleNavigateBack}></lwc:component>
-                        </template>
-                    </div>
-                    <shell-theme-switcher
-                        slds-version={_sldsVersion}
-                        dark-mode={_darkMode}
-                        ontoggleslds={handleToggleSLDS}
-                        ontoggledarkmode={handleToggleDarkMode}>
-                    </shell-theme-switcher>
+                        </div>
+                        <shell-theme-switcher
+                            slds-version={_sldsVersion}
+                            dark-mode={_darkMode}
+                            ontoggleslds={handleToggleSLDS}
+                            ontoggledarkmode={handleToggleDarkMode}>
+                        </shell-theme-switcher>
                     </div>
                 </div>
             </lightning-layout-item>

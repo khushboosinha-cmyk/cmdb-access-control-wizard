@@ -17,7 +17,7 @@ const slds2CssUrl = new URL(
     import.meta.url
 ).href;
 
-const STORAGE_KEY_SLDS_VERSION = 'slds-ui-slds-version';
+export const STORAGE_KEY_SLDS_VERSION = 'slds-ui-slds-version';
 
 const SLDS2_KEY = 'slds-plus';
 const SLDS1_KEY = 'salesforce-lightning-design-system';

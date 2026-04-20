@@ -1,9 +1,9 @@
-import { LightningElement, api, track } from 'lwc';
+import { LightningElement, api } from 'lwc';
 
 export default class GlobalNavigation extends LightningElement {
     @api currentPage = 'home';
     @api navItems = [];
-    @track isWaffleMenuOpen = false;
+    isWaffleMenuOpen = false;
 
     get waffleDropdownTriggerClass() {
         const base = 'slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger_click slds-no-hover';
@@ -19,6 +19,7 @@ export default class GlobalNavigation extends LightningElement {
                 ...item,
                 isActive,
                 tabClass: isActive ? `${base} slds-is-active` : base,
+                ariaCurrent: isActive ? 'page' : null,
             };
         });
     }
@@ -105,22 +106,18 @@ export default class GlobalNavigation extends LightningElement {
     }
 
     connectedCallback() {
-        this._boundHandleDocumentClick = this._handleDocumentClick.bind(this);
+        this._handleDocumentClickBound = this._handleDocumentClick.bind(this);
+        document.addEventListener('click', this._handleDocumentClickBound);
     }
 
     disconnectedCallback() {
-        document.removeEventListener('click', this._boundHandleDocumentClick);
+        document.removeEventListener('click', this._handleDocumentClickBound);
     }
 
     renderedCallback() {
-        if (this.isWaffleMenuOpen) {
-            document.addEventListener('click', this._boundHandleDocumentClick);
-            if (this._focusMenuOnNextRender) {
-                this._focusMenuOnNextRender = false;
-                this._focusFirstMenuItem();
-            }
-        } else {
-            document.removeEventListener('click', this._boundHandleDocumentClick);
+        if (this._focusMenuOnNextRender) {
+            this._focusMenuOnNextRender = false;
+            this._focusFirstMenuItem();
         }
     }
 
@@ -132,10 +129,10 @@ export default class GlobalNavigation extends LightningElement {
     }
 
     _handleDocumentClick(event) {
+        if (!this.isWaffleMenuOpen) return;
         const trigger = this.template.querySelector('[class*="slds-dropdown-trigger"]');
         const path = event.composedPath ? event.composedPath() : [];
-        const clickInsideTrigger = trigger && path.includes(trigger);
-        if (trigger && !clickInsideTrigger) {
+        if (trigger && !path.includes(trigger)) {
             this.isWaffleMenuOpen = false;
         }
     }

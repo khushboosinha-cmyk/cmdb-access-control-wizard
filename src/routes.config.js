@@ -28,13 +28,6 @@ export const routes = [
     navLabel: 'Icons',
   },
   {
-    path: '/settings',
-    component: 'page-settings',
-    title: 'Settings',
-    navPage: 'settings',
-    navLabel: 'Settings',
-  },
-  {
     path: '/users/:id',
     component: 'page-user',
     title: (params) => `User ${params.id}`,

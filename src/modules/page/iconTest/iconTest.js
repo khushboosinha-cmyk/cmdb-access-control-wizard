@@ -1,4 +1,4 @@
-import { LightningElement, track } from 'lwc';
+import { LightningElement } from 'lwc';
 
 const STANDARD_ICONS = [
     'account', 'contact', 'lead', 'opportunity', 'case', 'task', 'event',
@@ -53,7 +53,7 @@ const DOCTYPE_ICONS = [
 ].map(name => ({ name: `doctype:${name}`, label: name }));
 
 export default class IconTest extends LightningElement {
-    @track renderTime = null;
+    renderTime = null;
     _renderStart = null;
 
     connectedCallback() {

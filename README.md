@@ -11,11 +11,11 @@ A **starter template** for prototyping and developing Salesforce experiences loc
 ## What you get
 
 - **App shell** — Header, global navigation, theme switcher (light/dark, SLDS 1/2), and panel layout  
-- **Client-side routing** — Declarative routes in `src/router.js` with path params (e.g. `/users/:id`), History API, no full page reload  
+- **Client-side routing** — Declarative routes in `src/routes.config.js` with path params (e.g. `/users/:id`), History API, no full page reload  
 - **SLDS + Lightning Base Components** — Design system and Salesforce component library wired and ready to use  
 - **Synthetic Shadow DOM** — Matches Salesforce platform behavior so styles and DOM semantics align with production  
 - **Icon setup** — Prebuild script, Vite aliases for `lightning/iconSvgTemplates*`, and shim modules under `src/build/lightning-icon/shims/`; generated bundles in `src/build/generated/`  
-- **Example pages** — Home, Settings, Icons, and a sample parameterized page (`/users/:id`). See `src/modules/page/` and `src/modules/ui/` for patterns.
+- **Example pages** — Home, Icons, Contacts, and a sample parameterized page (`/users/:id`). See `src/modules/page/` and `src/modules/ui/` for patterns.
 
 ## Quick start
 
@@ -34,7 +34,7 @@ npm run preview
 ## Project structure
 
 ```
-salesforce-ui/
+design-system-2-starter-kit/
 ├── src/
 │   ├── modules/
 │   │   ├── shell/                 # App shell (shell-*)
@@ -47,7 +47,6 @@ salesforce-ui/
 │   │   ├── page/                  # Route-level views (page-*)
 │   │   │   ├── home/
 │   │   │   ├── user/              # e.g. /users/:id
-│   │   │   ├── settings/
 │   │   │   └── iconTest/
 │   │   ├── ui/                    # Reusable building blocks (ui-*)
 │   │   │   └── example/
@@ -88,7 +87,7 @@ Only add components under **page/** or **ui/**. Put shell chrome in **`shell/`**
 1. Clone or copy the repo, then `npm install` and `npm run dev`.
 2. **Add a page:** Create a folder under `src/modules/page/<name>/`, then:
    - Add a route in `src/routes.config.js` (e.g. `{ path: '/dashboard', component: 'page-dashboard', title: 'Dashboard', navPage: 'dashboard', navLabel: 'Dashboard' }`).
-   - In `src/modules/shell/app/app.js`, import the component and add it to `ROUTE_COMPONENTS`.
+   - In `src/modules/shell/app/app.js`, import the component and add it to `ROUTE_COMPONENTS`. That's it — `src/router.js` does not need editing.
    - For child routes under an existing tab (e.g. `/contacts/:id`), use `navHighlight: '<parentNavPage>'` instead of `navPage` so the parent tab is highlighted without creating a new nav entry.
 3. **Add a reusable component:** Create a folder under `src/modules/ui/<name>/` and use it as `<ui-<name>>` in any page or other component.
 4. Follow the namespace rules above and the SLDS/LWC conventions referenced in this repo (e.g. `.cursor/rules` if present).
@@ -173,6 +172,10 @@ After GitHub finishes publishing, find your live site URL on **Settings → Page
 **Preview locally:** **`npm run build`** then **`npm run preview`** exercises path routing. To preview the GitHub Pages bundle, run **`npm run build:gh-pages`** then **`npm run preview`**.
 
 **Another remote or URL:** `npx gh-pages -d dist -o <remote-name>` or `npx gh-pages -d dist -r https://github.com/org/repo.git`.
+
+## AI tooling
+
+This project includes an `mcp.json` that automatically configures the [Salesforce DX MCP server](https://www.npmjs.com/package/@salesforce/mcp) for AI-assisted development. Editors that support MCP (e.g. Claude Code, Cursor, VS Code with Copilot) will pick it up and gain access to Salesforce-specific code analysis and LWC guidance tools. No setup is required — the server runs via `npx` on demand.
 
 ## References
 

@@ -45,6 +45,7 @@
                             href={item.href}
                             class="slds-context-bar__label-action"
                             title={item.label}
+                            aria-current={item.ariaCurrent}
                             data-page={item.page}
                             onclick={handleNavItemClick}>
                             <span class="slds-assistive-text" if:true={item.isActive}>Current Page:</span>

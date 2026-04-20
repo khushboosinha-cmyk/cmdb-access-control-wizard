@@ -1,17 +1,17 @@
-import { LightningElement, track } from 'lwc';
+import { LightningElement } from 'lwc';
 import { getCurrentRoute, navigate } from '../../../router';
 import { getContactById } from 'data/contacts';
 
 const ACTIVITY_ITEMS = [
-    { id: 'a1', type: 'call', iconName: 'standard:log_a_call', subject: 'Follow-up call', date: 'Mar 10, 2026', description: 'Discussed renewal timeline and next steps.' },
-    { id: 'a2', type: 'email', iconName: 'standard:email', subject: 'Proposal sent', date: 'Mar 7, 2026', description: 'Sent updated pricing proposal via email.' },
-    { id: 'a3', type: 'event', iconName: 'standard:event', subject: 'Quarterly review meeting', date: 'Feb 28, 2026', description: 'Reviewed Q4 results and Q1 goals.' },
-    { id: 'a4', type: 'call', iconName: 'standard:log_a_call', subject: 'Introductory call', date: 'Feb 15, 2026', description: 'Initial discovery call to understand requirements.' }
+    { id: 'a1', type: 'call', iconName: 'standard:log_a_call', subject: 'Follow-up call', date: '3 days ago', description: 'Discussed renewal timeline and next steps.' },
+    { id: 'a2', type: 'email', iconName: 'standard:email', subject: 'Proposal sent', date: '1 week ago', description: 'Sent updated pricing proposal via email.' },
+    { id: 'a3', type: 'event', iconName: 'standard:event', subject: 'Quarterly review meeting', date: '2 weeks ago', description: 'Reviewed Q4 results and Q1 goals.' },
+    { id: 'a4', type: 'call', iconName: 'standard:log_a_call', subject: 'Introductory call', date: '1 month ago', description: 'Initial discovery call to understand requirements.' }
 ];
 
 export default class ContactDetail extends LightningElement {
-    @track contact = null;
-    @track isFollowing = false;
+    contact = null;
+    isFollowing = false;
     activityItems = ACTIVITY_ITEMS;
 
     connectedCallback() {

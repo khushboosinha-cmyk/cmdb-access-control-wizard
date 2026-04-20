@@ -1,10 +1,10 @@
 const CONTACTS = [
     {
         id: '1',
-        name: 'Carole White',
+        name: 'Lando Voss',
         title: 'VP Sales',
         company: 'Global Media',
-        email: 'cwhite@globalmedia.com',
+        email: 'lvoss@globalmedia.com',
         phone: '(415) 555-1212',
         mobile: '(415) 555-1300',
         department: 'Sales',
@@ -16,10 +16,10 @@ const CONTACTS = [
     },
     {
         id: '2',
-        name: 'Edward Stamos',
+        name: 'Carlos Piquet',
         title: 'President and CEO',
         company: 'Acme',
-        email: 'estamos@acme.com',
+        email: 'cpiquet@acme.com',
         phone: '(212) 555-5555',
         mobile: '(212) 555-5600',
         department: 'Executive',
@@ -31,10 +31,10 @@ const CONTACTS = [
     },
     {
         id: '3',
-        name: 'Geoff Minor',
+        name: 'Lewis Mansell',
         title: 'President',
         company: 'Global Media',
-        email: 'gminor@globalmedia.com',
+        email: 'lmansell@globalmedia.com',
         phone: '(415) 555-1212',
         mobile: '(415) 555-1400',
         department: 'Executive',
@@ -46,10 +46,10 @@ const CONTACTS = [
     },
     {
         id: '4',
-        name: 'Howard Jones',
+        name: 'Max Alonso',
         title: 'Buyer',
         company: 'Acme',
-        email: 'hjones@acme.com',
+        email: 'malonso@acme.com',
         phone: '(212) 555-5555',
         mobile: '(212) 555-5700',
         department: 'Procurement',
@@ -61,10 +61,10 @@ const CONTACTS = [
     },
     {
         id: '5',
-        name: 'Jon Amos',
+        name: 'Oscar Lauda',
         title: 'Sales Manager',
         company: 'Global Media',
-        email: 'jamos@globalmedia.com',
+        email: 'olauda@globalmedia.com',
         phone: '(905) 555-1212',
         mobile: '(905) 555-1300',
         department: 'Sales',
@@ -76,10 +76,10 @@ const CONTACTS = [
     },
     {
         id: '6',
-        name: 'Leanne Tomlin',
+        name: 'Kimi Leclerc',
         title: 'VP Customer Support',
         company: 'Acme',
-        email: 'ltomlin@acme.com',
+        email: 'kleclerc@acme.com',
         phone: '(212) 555-5555',
         mobile: '(212) 555-5800',
         department: 'Customer Support',
@@ -91,18 +91,18 @@ const CONTACTS = [
     },
     {
         id: '7',
-        name: 'Marc Benioff',
+        name: 'Ayrton Prost',
         title: 'Executive Officer',
-        company: 'salesforce.com',
-        email: 'mbenioff@salesforce.com',
-        phone: '(415) 901-7000',
-        mobile: '(415) 901-7100',
+        company: 'Pinnacle Corp',
+        email: 'aprost@pinnaclecorp.com',
+        phone: '(415) 555-7000',
+        mobile: '(415) 555-7100',
         department: 'Executive',
         mailingStreet: '415 Mission St',
         mailingCity: 'San Francisco',
         mailingState: 'CA',
         mailingZip: '94105',
-        description: 'Executive contact at salesforce.com for strategic initiatives.'
+        description: 'Executive contact at Pinnacle Corp for strategic initiatives.'
     }
 ];
 

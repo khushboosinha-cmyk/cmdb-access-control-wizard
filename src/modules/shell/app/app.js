@@ -1,19 +1,18 @@
-import { LightningElement, track } from 'lwc';
+import { LightningElement } from 'lwc';
 import { subscribe, navigate, linkHref } from '../../../router';
 import { routes } from '../../../routes.config';
-import { toggleSLDS, activeSLDSVersion } from '../../../build/slds-loader';
+import { toggleSLDS, activeSLDSVersion, STORAGE_KEY_SLDS_VERSION } from '../../../build/slds-loader';
 import Home from 'page/home';
 import IconTest from 'page/iconTest';
-import Settings from 'page/settings';
 import User from 'page/user';
 import Contacts from 'page/contacts';
 import ContactDetail from 'page/contactDetail';
+import NotFound from 'page/notFound';
 
 /** Option A: explicit registration – add one import + one entry here when adding a route */
 const ROUTE_COMPONENTS = {
     'page-home': Home,
     'page-icon-test': IconTest,
-    'page-settings': Settings,
     'page-user': User,
     'page-contacts': Contacts,
     'page-contact-detail': ContactDetail,
@@ -35,19 +34,19 @@ const NAV_ITEMS = routes.filter((r) => r.navPage).map((r) => {
     return { page: r.navPage, label: r.navLabel, path, href: linkHref(path) };
 });
 
-const STORAGE_KEY_SLDS_VERSION = 'slds-ui-slds-version';
 const STORAGE_KEY_DARK_MODE = 'slds-ui-dark-mode';
 
 export default class App extends LightningElement {
-    @track route;
-    @track _sldsVersion = 2;
-    @track _darkMode = false;
-    @track selectedPanel = 'agentforce_panel';
-    @track isPanelOpen = false;
+    route;
+    _sldsVersion = 2;
+    _darkMode = false;
+    selectedPanel = 'agentforce_panel';
+    isPanelOpen = false;
 
     get componentCtor() {
-        const name = this.route?.component;
-        return name ? ROUTE_COMPONENTS[name] ?? null : null;
+        if (!this.route) return NotFound;
+        const name = this.route.component;
+        return ROUTE_COMPONENTS[name] ?? NotFound;
     }
 
     get currentNavPage() {

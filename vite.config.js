@@ -86,7 +86,7 @@ export default defineConfig({
     open: false,
   },
   optimizeDeps: {
-    exclude: ['lightning/modal', 'lightning/primitiveOverlay', 'lightning/overlayUtils', 'lightning/modalBase', 'lightning/utilsPrivate'],
+    exclude: ['lightning/modal', 'lightning/toast', 'lightning/toastContainer', 'lightning/showToastEvent', 'lightning/primitiveOverlay', 'lightning/overlayUtils', 'lightning/modalBase', 'lightning/utilsPrivate'],
   },
   resolve: {
     alias: {

@@ -1,15 +1,16 @@
-import { LightningElement, track } from 'lwc';
+import { LightningElement } from 'lwc';
+import Toast from 'lightning/toast';
 import DemoModal from 'ui/demoModal';
 
 export default class Home extends LightningElement {
-    @track inputValue = '';
-    @track checkboxGroupValues = [];
-    @track selectedRadioValue = 'option1';
-    @track selectedComboboxValue = 'option1';
-    @track sliderValue = 50;
-    @track textAreaValue = '';
-    @track dateValue = '';
-    @track toggleValue = false;
+    inputValue = '';
+    checkboxGroupValues = [];
+    selectedRadioValue = 'option1';
+    selectedComboboxValue = 'option1';
+    sliderValue = 50;
+    textAreaValue = '';
+    dateValue = '';
+    toggleValue = false;
 
     get comboboxOptions() {
         return [
@@ -68,29 +69,23 @@ export default class Home extends LightningElement {
     }
 
     handleButtonClick() {
-        alert('Button clicked! Check the console for form values.');
-        console.log('Form Values:', {
-            input: this.inputValue,
-            checkboxGroup: this.checkboxGroupValues,
-            radio: this.selectedRadioValue,
-            combobox: this.selectedComboboxValue,
-            slider: this.sliderValue,
-            textArea: this.textAreaValue,
-            date: this.dateValue,
-            toggle: this.toggleValue,
-        });
+        Toast.show({ label: 'Button clicked', message: 'Base button was clicked.', variant: 'info', mode: 'dismissible' });
     }
 
     handleSuccessButton() {
-        alert('Success button clicked!');
+        Toast.show({ label: 'Success', message: 'Success button was clicked.', variant: 'success', mode: 'dismissible' });
     }
 
     handleNeutralButton() {
-        alert('Neutral button clicked!');
+        Toast.show({ label: 'Neutral', message: 'Neutral button was clicked.', variant: 'info', mode: 'dismissible' });
     }
 
     handleBrandButton() {
-        alert('Brand button clicked!');
+        Toast.show({ label: 'Brand', message: 'Brand button was clicked.', variant: 'info', mode: 'dismissible' });
+    }
+
+    handleDestructiveButton() {
+        Toast.show({ label: 'Destructive', message: 'Destructive button was clicked.', variant: 'error', mode: 'dismissible' });
     }
 
     handleOpenModal() {
