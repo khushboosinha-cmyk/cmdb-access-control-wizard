@@ -10,6 +10,9 @@ src/build/generated/
 .env
 .env.*.local
 
+# Cursor (local-only)
+.cursor/commands/
+
 # OS
 .DS_Store
 
