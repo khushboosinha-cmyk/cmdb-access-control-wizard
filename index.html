@@ -13,6 +13,7 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+      font-size: 13px;
     }
 
     /* ── Top bar ── */
@@ -25,8 +26,11 @@
       gap: 12px;
       flex-shrink: 0;
     }
-    .topbar-logo { width: 32px; height: 32px; background: #fff; border-radius: 4px; display:flex; align-items:center; justify-content:center; }
-    .topbar-logo svg { width: 22px; height: 22px; }
+    .topbar-logo {
+      width: 32px; height: 32px;
+      background: #fff; border-radius: 4px;
+      display: flex; align-items: center; justify-content: center;
+    }
     .topbar-title { color: #fff; font-size: 14px; font-weight: 600; }
 
     /* ── Nav bar ── */
@@ -37,171 +41,158 @@
       display: flex;
       align-items: center;
       padding: 0 16px;
-      gap: 0;
       flex-shrink: 0;
     }
     .nav-tab {
       height: 36px;
       padding: 0 14px;
-      display: flex;
-      align-items: center;
-      font-size: 13px;
-      color: #3b82f6;
-      border-bottom: 2px solid #3b82f6;
-      cursor: pointer;
-      gap: 6px;
+      display: flex; align-items: center;
+      font-size: 13px; color: #0176d3;
+      border-bottom: 2px solid #0176d3;
+      gap: 6px; cursor: default;
     }
     .nav-tab-close { font-size: 15px; color: #6b7280; cursor: pointer; line-height: 1; }
     .nav-tab-close:hover { color: #ef4444; }
 
     /* ── Main layout ── */
-    .main {
-      flex: 1;
-      display: flex;
-      overflow: hidden;
-    }
+    .main { flex: 1; display: flex; overflow: hidden; min-height: 0; }
 
     /* ── Stepper sidebar ── */
     .sidebar {
       width: 220px;
       background: #fff;
       border-right: 1px solid #e5e7eb;
-      padding: 24px 0;
+      padding: 28px 0 20px;
       flex-shrink: 0;
+      overflow-y: auto;
     }
     .step-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      padding: 8px 20px;
-      cursor: pointer;
-      position: relative;
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 6px 20px; position: relative;
     }
-    .step-item::before {
+    .step-item + .step-item::before {
       content: '';
-      position: absolute;
-      left: 29px;
-      top: 32px;
-      width: 2px;
-      height: calc(100% - 4px);
-      background: #d1d5db;
+      position: absolute; left: 29px; top: -10px;
+      width: 2px; height: 14px; background: #d1d5db;
     }
-    .step-item:last-child::before { display: none; }
+    .step-item.done + .step-item::before,
+    .step-item.active + .step-item::before { background: #0176d3; }
+
     .step-dot {
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      border: 2px solid #d1d5db;
-      background: #fff;
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 10px;
-      font-weight: 600;
-      color: #6b7280;
-      z-index: 1;
-      margin-top: 1px;
+      width: 20px; height: 20px; border-radius: 50%;
+      border: 2px solid #d1d5db; background: #fff;
+      flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+      font-size: 10px; font-weight: 700; color: #fff; margin-top: 1px;
       transition: all .2s;
     }
-    .step-item.done .step-dot {
-      background: #3b82f6;
-      border-color: #3b82f6;
-      color: #fff;
-    }
+    .step-item.done  .step-dot { background: #0176d3; border-color: #0176d3; }
     .step-item.active .step-dot {
-      border-color: #3b82f6;
-      background: #fff;
-      box-shadow: 0 0 0 3px rgba(59,130,246,.2);
+      border-color: #0176d3; background: #fff;
+      box-shadow: 0 0 0 3px rgba(1,118,211,.18);
     }
     .step-item.active .step-dot::after {
-      content: '';
-      width: 8px; height: 8px;
-      border-radius: 50%;
-      background: #3b82f6;
+      content: ''; width: 8px; height: 8px; border-radius: 50%; background: #0176d3;
     }
-    .step-item.done::before, .step-item.active::before { background: #3b82f6; }
-    .step-label { font-size: 13px; color: #6b7280; padding-top: 2px; }
-    .step-item.active .step-label { color: #111827; font-weight: 500; }
-    .step-item.done .step-label { color: #374151; }
+    .step-label { font-size: 13px; color: #6b7280; padding-top: 2px; line-height: 1.35; }
+    .step-item.active .step-label { color: #0f1c2b; font-weight: 500; }
+    .step-item.done  .step-label  { color: #374151; }
 
-    /* ── Content area ── */
-    .content {
-      flex: 1;
-      overflow-y: auto;
-      padding: 28px 40px 100px;
-    }
+    /* ── Content ── */
+    .content { flex: 1; overflow-y: auto; padding: 28px 44px 90px; }
 
-    .step-title {
-      font-size: 20px;
-      font-weight: 600;
-      color: #111827;
-      margin-bottom: 24px;
-    }
+    .step-title { font-size: 20px; font-weight: 600; color: #0f1c2b; margin-bottom: 24px; }
 
     /* ── Form fields ── */
-    .field { margin-bottom: 20px; }
-    .field label {
-      display: block;
-      font-size: 12px;
-      font-weight: 500;
-      color: #374151;
-      margin-bottom: 5px;
+    .field { margin-bottom: 18px; }
+    .field label, .field-label {
+      display: block; font-size: 12px; font-weight: 500; color: #374151; margin-bottom: 5px;
     }
-    .field input, .field textarea, .field select {
-      width: 100%;
-      max-width: 540px;
-      padding: 8px 12px;
-      border: 1px solid #d1d5db;
-      border-radius: 4px;
-      font-size: 13px;
-      color: #111827;
-      outline: none;
-      transition: border-color .15s;
-      font-family: inherit;
-      background: #fff;
+    .field input[type=text],
+    .field input[type=search],
+    .field textarea,
+    .field select {
+      width: 100%; max-width: 540px;
+      padding: 7px 11px;
+      border: 1px solid #d1d5db; border-radius: 4px;
+      font-size: 13px; color: #0f1c2b; outline: none;
+      transition: border-color .15s; font-family: inherit; background: #fff;
     }
     .field input:focus, .field textarea:focus, .field select:focus {
-      border-color: #3b82f6;
-      box-shadow: 0 0 0 3px rgba(59,130,246,.12);
+      border-color: #0176d3; box-shadow: 0 0 0 3px rgba(1,118,211,.12);
     }
-    .field textarea { resize: vertical; min-height: 72px; }
+    .field textarea { resize: vertical; min-height: 68px; }
 
-    /* ── CI Type pills ── */
+    /* ── CI pills ── */
     .pill-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
     .pill {
       display: inline-flex; align-items: center; gap: 5px;
-      padding: 3px 10px;
-      border-radius: 4px;
-      background: #f3f4f6;
-      border: 1px solid #e5e7eb;
+      padding: 3px 10px; border-radius: 12px;
+      background: #f3f4f6; border: 1px solid #e5e7eb;
       font-size: 12px; color: #374151;
     }
-    .pill .remove { cursor: pointer; color: #9ca3af; font-size: 14px; line-height: 1; }
-    .pill .remove:hover { color: #ef4444; }
+    .pill .rm { cursor: pointer; color: #9ca3af; font-size: 13px; }
+    .pill .rm:hover { color: #ef4444; }
 
     /* ── Checkboxes ── */
-    .checkbox-group { display: flex; flex-direction: column; gap: 10px; margin-top: 6px; }
-    .checkbox-item { display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 13px; color: #374151; }
-    .checkbox-item input[type=checkbox] { width: 15px; height: 15px; accent-color: #3b82f6; cursor: pointer; }
+    .checkbox-group { display: flex; flex-direction: column; gap: 9px; margin-top: 4px; }
+    .checkbox-item { display: flex; align-items: center; gap: 8px; cursor: pointer; color: #374151; }
+    .checkbox-item input[type=checkbox] { width: 14px; height: 14px; accent-color: #0176d3; cursor: pointer; }
 
-    /* ── Search input ── */
-    .search-wrap { position: relative; margin-bottom: 10px; max-width: 540px; }
-    .search-wrap svg { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #9ca3af; }
+    .divider { border: none; border-top: 1px solid #e5e7eb; margin: 22px 0; max-width: 540px; }
+
+    /* ── Trigger ── */
+    .trigger-top { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; max-width: 680px; }
+    .trigger-top label { font-size: 12px; font-weight: 500; color: #374151; white-space: nowrap; }
+    .trigger-top select {
+      flex: 1; max-width: 300px;
+      padding: 7px 11px; border: 1px solid #d1d5db; border-radius: 4px;
+      font-size: 13px; color: #0f1c2b; outline: none; font-family: inherit;
+    }
+    .trigger-top select:focus { border-color: #0176d3; box-shadow: 0 0 0 3px rgba(1,118,211,.12); }
+
+    .conditions-list { max-width: 680px; margin-bottom: 10px; }
+    .cond-row { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+    .cond-row .conn {
+      width: 38px; text-align: right; font-size: 11px; font-weight: 600; color: #6b7280; flex-shrink: 0;
+    }
+    .cond-row .conn.first { visibility: hidden; }
+    .cond-row select, .cond-row input {
+      flex: 1; min-width: 0;
+      padding: 7px 10px; border: 1px solid #d1d5db; border-radius: 4px;
+      font-size: 13px; color: #0f1c2b; outline: none; font-family: inherit; background: #fff;
+    }
+    .cond-row select:focus, .cond-row input:focus { border-color: #0176d3; box-shadow: 0 0 0 3px rgba(1,118,211,.12); }
+    .cond-row select.op { flex: 0.7; }
+    .cond-row input.val { flex: 1.2; }
+    .del-btn {
+      width: 28px; height: 28px; flex-shrink: 0; border-radius: 50%; border: none;
+      background: #fee2e2; color: #dc2626; cursor: pointer;
+      font-size: 16px; display: flex; align-items: center; justify-content: center;
+    }
+    .del-btn:hover { background: #fca5a5; }
+    .ghost-btn {
+      height: 30px; padding: 0 12px; border-radius: 4px;
+      border: 1px solid #d1d5db; background: #fff; color: #374151;
+      font-size: 12px; font-weight: 500; cursor: pointer; font-family: inherit;
+      display: inline-flex; align-items: center; gap: 5px;
+    }
+    .ghost-btn:hover { background: #f3f4f6; }
+
+    /* ── User picker ── */
+    .search-wrap { position: relative; max-width: 540px; margin-bottom: 10px; }
+    .search-wrap svg { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #9ca3af; pointer-events: none; }
     .search-input {
       width: 100%; height: 36px; padding: 0 12px 0 34px;
       border: 1px solid #d1d5db; border-radius: 4px;
       font-size: 13px; outline: none; font-family: inherit;
     }
-    .search-input:focus { border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59,130,246,.12); }
+    .search-input:focus { border-color: #0176d3; box-shadow: 0 0 0 3px rgba(1,118,211,.12); }
 
-    /* ── Results list ── */
     .results-list { border: 1px solid #e5e7eb; border-radius: 4px; overflow: hidden; max-width: 540px; margin-bottom: 14px; }
     .result-row {
       display: flex; align-items: center; gap: 10px;
       padding: 0 12px; height: 44px;
-      background: #fff; border-bottom: 1px solid #f3f4f6;
-      transition: background .1s;
+      border-bottom: 1px solid #f3f4f6; background: #fff; transition: background .1s;
     }
     .result-row:last-child { border-bottom: none; }
     .result-row:nth-child(even) { background: #f9fafb; }
@@ -211,168 +202,145 @@
       display: flex; align-items: center; justify-content: center;
       font-size: 10px; font-weight: 700; color: #fff; flex-shrink: 0;
     }
-    .result-name { flex: 1; font-size: 13px; font-weight: 500; color: #111827; }
+    .result-name { flex: 1; font-weight: 500; color: #0f1c2b; }
     .badge { font-size: 11px; font-weight: 500; padding: 3px 8px; border-radius: 10px; flex-shrink: 0; }
-    .badge-user { background: #dbeafe; color: #1d4ed8; }
+    .badge-user  { background: #dbeafe; color: #1d4ed8; }
     .badge-group { background: #ede9fe; color: #6d28d9; }
     .add-btn {
-      flex-shrink: 0; height: 26px; padding: 0 10px;
-      border-radius: 4px; font-size: 12px; font-weight: 500;
-      cursor: pointer; border: 1px solid #2563eb;
-      background: transparent; color: #2563eb; transition: all .15s; font-family: inherit;
+      flex-shrink: 0; height: 26px; padding: 0 10px; border-radius: 4px;
+      font-size: 12px; font-weight: 500; cursor: pointer;
+      border: 1px solid #0176d3; background: transparent; color: #0176d3;
+      transition: all .15s; font-family: inherit;
     }
-    .add-btn:hover:not(:disabled) { background: #2563eb; color: #fff; }
-    .add-btn.added { border-color: #dcfce7; background: #dcfce7; color: #16a34a; cursor: default; }
+    .add-btn:hover:not([disabled]) { background: #0176d3; color: #fff; }
+    .add-btn.added { border-color: #bbf7d0; background: #dcfce7; color: #16a34a; cursor: default; }
 
-    /* ── Chips ── */
+    .chips-meta { margin-bottom: 12px; }
     .chips-label { font-size: 12px; font-weight: 500; color: #6b7280; margin-bottom: 6px; }
-    .chips-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+    .chips-row { display: flex; flex-wrap: wrap; gap: 8px; }
     .chip {
-      display: inline-flex; align-items: center; gap: 5px;
+      display: inline-flex; align-items: center; gap: 4px;
       height: 24px; padding: 0 8px 0 10px;
       border-radius: 12px; background: #e2eaf8; border: 1px solid #b3c6e8;
-      font-size: 12px; color: #111827; animation: chipIn .15s ease;
+      font-size: 12px; color: #0f1c2b; animation: chipIn .15s ease;
     }
-    @keyframes chipIn { from { opacity:0; transform: scale(.85); } to { opacity:1; transform: scale(1); } }
-    .chip-remove { background: none; border: none; cursor: pointer; font-size: 15px; line-height: 1; color: #6b7280; padding: 0; display: flex; align-items: center; }
-    .chip-remove:hover { color: #ef4444; }
+    @keyframes chipIn { from { opacity:0; transform:scale(.85); } to { opacity:1; transform:scale(1); } }
+    .chip-rm { background: none; border: none; cursor: pointer; font-size: 15px; color: #6b7280; padding: 0; display: flex; align-items: center; }
+    .chip-rm:hover { color: #ef4444; }
 
-    /* ── Summary cards ── */
+    /* ── Summary ── */
     .summary-card {
-      border: 1px solid #bcd0ea;
-      border-radius: 6px;
-      overflow: hidden;
-      margin-bottom: 16px;
-      max-width: 700px;
+      border: 1px solid #bcd0ea; border-radius: 6px;
+      overflow: hidden; margin-bottom: 16px; max-width: 680px;
     }
-    .summary-card-header {
-      background: #f0f5fb;
-      border-bottom: 1px solid #dce8f5;
-      padding: 8px 14px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+    .sc-header {
+      background: #f0f5fb; border-bottom: 1px solid #dce8f5;
+      padding: 7px 14px;
+      display: flex; align-items: center; justify-content: space-between;
     }
-    .summary-card-header-left { display: flex; flex-direction: column; }
-    .summary-step-label { font-size: 11px; color: #6b7280; }
-    .summary-section-title { font-size: 13px; font-weight: 600; color: #111827; }
+    .sc-header-left { display: flex; flex-direction: column; gap: 1px; }
+    .sc-step  { font-size: 11px; color: #6b7280; }
+    .sc-title { font-size: 13px; font-weight: 600; color: #0f1c2b; }
     .edit-link {
-      font-size: 12px; font-weight: 500; color: #2563eb;
+      font-size: 12px; font-weight: 500; color: #0176d3;
       background: none; border: none; cursor: pointer; font-family: inherit;
-      text-decoration: none;
     }
     .edit-link:hover { text-decoration: underline; }
-    .summary-card-body { padding: 10px 14px 6px; }
-    .ro-field { margin-bottom: 14px; }
-    .ro-field:last-child { margin-bottom: 6px; }
-    .ro-label { font-size: 11px; color: #6b7280; margin-bottom: 3px; }
-    .ro-value { font-size: 13px; font-weight: 500; color: #111827; padding-bottom: 8px; border-bottom: 1px solid #f3f4f6; }
-    .ro-field:last-child .ro-value { border-bottom: none; }
-    .ro-pills { display: flex; flex-wrap: wrap; gap: 6px; padding-bottom: 8px; border-bottom: 1px solid #f3f4f6; }
-    .ro-pill {
-      padding: 3px 10px; border-radius: 4px;
-      background: #f3f4f6; border: 1px solid #e5e7eb;
-      font-size: 12px; color: #374151;
-    }
-    .ro-pill.more { background: #dbeafe; color: #1d4ed8; border-color: #bfdbfe; }
+    .sc-body { padding: 10px 14px 8px; }
+    .ro-field { margin-bottom: 12px; }
+    .ro-field:last-child { margin-bottom: 4px; }
+    .ro-label { font-size: 11px; color: #6b7280; margin-bottom: 2px; }
+    .ro-value { font-size: 13px; font-weight: 500; color: #0f1c2b; padding-bottom: 10px; border-bottom: 1px solid #f3f4f6; }
+    .ro-field:last-child .ro-value { border-bottom: none; padding-bottom: 0; }
+    .ro-pills { display: flex; flex-wrap: wrap; gap: 6px; padding-bottom: 10px; border-bottom: 1px solid #f3f4f6; }
+    .ro-field:last-child .ro-pills { border-bottom: none; padding-bottom: 0; }
+    .ro-pill { padding: 3px 10px; border-radius: 4px; background: #f3f4f6; border: 1px solid #e5e7eb; font-size: 12px; color: #374151; }
+    .ro-pill.more   { background: #dbeafe; color: #1d4ed8; border-color: #bfdbfe; }
     .ro-pill.action { background: #dcfce7; color: #16a34a; border-color: #bbf7d0; }
-    .summary-user-row {
-      display: flex; align-items: center; gap: 10px;
-      padding: 8px 0;
-      border-bottom: 1px solid #f3f4f6;
+    .s-cond-row {
+      display: flex; align-items: center; gap: 8px;
+      padding: 6px 0; border-bottom: 1px solid #f3f4f6; font-size: 12px; color: #374151;
     }
-    .summary-user-row:last-child { border-bottom: none; }
+    .s-cond-row:last-child { border-bottom: none; }
+    .s-conn { font-size: 11px; font-weight: 600; color: #6b7280; width: 30px; flex-shrink: 0; }
+    .s-val  { font-weight: 500; color: #0f1c2b; }
+    .s-user-row {
+      display: flex; align-items: center; gap: 10px;
+      padding: 8px 0; border-bottom: 1px solid #f3f4f6;
+    }
+    .s-user-row:last-child { border-bottom: none; }
 
     /* ── Footer ── */
     .footer {
       position: fixed; bottom: 0; left: 0; right: 0;
-      height: 56px; background: #fff;
-      border-top: 1px solid #e5e7eb;
+      height: 54px; background: #fff; border-top: 1px solid #e5e7eb;
       display: flex; align-items: center; justify-content: space-between;
-      padding: 0 40px 0 240px;
-      z-index: 100;
+      padding: 0 40px 0 240px; z-index: 100;
     }
     .btn {
-      height: 32px; padding: 0 18px;
-      border-radius: 4px; font-size: 13px; font-weight: 500;
-      cursor: pointer; font-family: inherit; transition: all .15s;
-      display: inline-flex; align-items: center; gap: 6px;
+      height: 32px; padding: 0 18px; border-radius: 4px;
+      font-size: 13px; font-weight: 500; cursor: pointer; font-family: inherit;
+      display: inline-flex; align-items: center; gap: 6px; transition: all .15s;
     }
+    .btn-cancel  { background: #fff; border: 1px solid #e5e7eb; color: #6b7280; }
+    .btn-cancel:hover { background: #f9fafb; }
     .btn-outline { background: #fff; border: 1px solid #d1d5db; color: #374151; }
     .btn-outline:hover { background: #f9fafb; }
-    .btn-primary { background: #2563eb; border: 1px solid #2563eb; color: #fff; }
-    .btn-primary:hover { background: #1d4ed8; }
+    .btn-primary { background: #0176d3; border: 1px solid #0176d3; color: #fff; }
+    .btn-primary:hover { background: #0164b0; }
     .btn-success { background: #16a34a; border: 1px solid #16a34a; color: #fff; }
     .btn-success:hover { background: #15803d; }
-    .btn-cancel { background: #fff; border: 1px solid #e5e7eb; color: #6b7280; }
-    .btn-cancel:hover { background: #f9fafb; color: #374151; }
-
     .footer-right { display: flex; gap: 10px; }
 
-    /* ── Page hidden ── */
     .step-page { display: none; }
     .step-page.active { display: block; }
 
-    /* ── Divider ── */
-    .section-divider { border: none; border-top: 1px solid #e5e7eb; margin: 20px 0; max-width: 540px; }
-
-    /* ── Success state ── */
-    .success-screen {
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      padding: 80px 40px; text-align: center;
+    .success-wrap {
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; padding: 80px 40px; text-align: center; width: 100%;
     }
     .success-icon {
       width: 64px; height: 64px; border-radius: 50%;
       background: #dcfce7; display: flex; align-items: center; justify-content: center;
-      font-size: 32px; margin-bottom: 20px;
+      font-size: 30px; margin-bottom: 20px;
     }
-    .success-title { font-size: 22px; font-weight: 600; color: #111827; margin-bottom: 8px; }
-    .success-sub { font-size: 14px; color: #6b7280; max-width: 380px; line-height: 1.5; }
+    .success-title { font-size: 22px; font-weight: 600; color: #0f1c2b; margin-bottom: 8px; }
+    .success-sub   { font-size: 14px; color: #6b7280; max-width: 380px; line-height: 1.6; }
   </style>
 </head>
 <body>
 
-<!-- Top bar -->
 <div class="topbar">
   <div class="topbar-logo">
-    <svg viewBox="0 0 32 32" fill="none"><path d="M16 4C9.373 4 4 9.373 4 16s5.373 12 12 12 12-5.373 12-12S22.627 4 16 4z" fill="#00A1E0"/><path d="M20.5 13.5a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z" fill="#fff"/></svg>
+    <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
+      <circle cx="16" cy="16" r="12" fill="#00A1E0"/>
+      <circle cx="16" cy="14" r="5" fill="#fff"/>
+      <path d="M8 23c0-4.4 3.6-8 8-8s8 3.6 8 8" stroke="#fff" stroke-width="2" fill="none"/>
+    </svg>
   </div>
   <span class="topbar-title">Cumulus CMDB</span>
 </div>
 
-<!-- Nav bar -->
 <div class="navbar">
-  <div class="nav-tab">New Rule <span class="nav-tab-close">×</span></div>
+  <div class="nav-tab">
+    New Rule
+    <span class="nav-tab-close" onclick="if(confirm('Discard?'))location.reload()">×</span>
+  </div>
 </div>
 
-<!-- Main -->
 <div class="main">
-  <!-- Stepper sidebar -->
   <div class="sidebar">
-    <div class="step-item done" data-step="1" onclick="goToStep(1)">
-      <div class="step-dot">✓</div>
-      <div class="step-label">Define Your Rule</div>
-    </div>
-    <div class="step-item" data-step="2" onclick="goToStep(2)">
-      <div class="step-dot"></div>
-      <div class="step-label">Trigger</div>
-    </div>
-    <div class="step-item" data-step="3" onclick="goToStep(3)">
-      <div class="step-dot"></div>
-      <div class="step-label">Users and User Groups</div>
-    </div>
-    <div class="step-item" data-step="4" onclick="goToStep(4)">
-      <div class="step-dot"></div>
-      <div class="step-label">Summary</div>
-    </div>
+    <div class="step-item active" id="si-1"><div class="step-dot" id="sd-1"></div><div class="step-label">Define Your Rule</div></div>
+    <div class="step-item"        id="si-2"><div class="step-dot" id="sd-2"></div><div class="step-label">Trigger</div></div>
+    <div class="step-item"        id="si-3"><div class="step-dot" id="sd-3"></div><div class="step-label">Users and User Groups</div></div>
+    <div class="step-item"        id="si-4"><div class="step-dot" id="sd-4"></div><div class="step-label">Summary</div></div>
   </div>
 
-  <!-- Content -->
   <div class="content">
 
-    <!-- STEP 1: Define Your Rule -->
+    <!-- STEP 1 -->
     <div class="step-page active" id="step-1">
-      <div class="step-title">Step 1: Define Rule</div>
+      <div class="step-title">Step 1: Define Rule and target object</div>
       <div class="field">
         <label>Rule name</label>
         <input type="text" id="ruleName" value="Compliance Example 1" />
@@ -381,361 +349,349 @@
         <label>Description</label>
         <textarea id="ruleDesc">Lorem ipsum</textarea>
       </div>
-    </div>
-
-    <!-- STEP 2: Define Target Object -->
-    <div class="step-page" id="step-2">
-      <div class="step-title">Step 2: Define Target Object</div>
+      <hr class="divider" />
       <div class="field">
         <label>Resource</label>
         <select id="resource">
-          <option>CI Type</option>
-          <option>Service</option>
-          <option>Application</option>
+          <option>CI Type</option><option>Service</option>
+          <option>Application</option><option>Network Device</option>
         </select>
       </div>
       <div class="field">
         <label>Applicable CI Types</label>
         <select id="ciTypeSelect" onchange="addCiType(this.value)">
           <option value="">Select classes…</option>
-          <option>Server</option>
-          <option>Hardware</option>
-          <option>Software</option>
-          <option>Network</option>
-          <option>Database</option>
-          <option>Storage</option>
-          <option>Virtual Machine</option>
-          <option>Container</option>
-          <option>Cloud Service</option>
+          <option>Server</option><option>Hardware</option><option>Software</option>
+          <option>Network</option><option>Database</option><option>Storage</option>
+          <option>Virtual Machine</option><option>Container</option><option>Cloud Service</option>
         </select>
         <div class="pill-row" id="ciTypePills"></div>
       </div>
-      <hr class="section-divider" />
       <div class="field">
-        <label>Action</label>
+        <div class="field-label">Action</div>
         <div class="checkbox-group">
           <label class="checkbox-item"><input type="checkbox" id="actCreate" checked /> Create</label>
           <label class="checkbox-item"><input type="checkbox" id="actDelete" /> Delete</label>
           <label class="checkbox-item"><input type="checkbox" id="actUpdate" /> Update</label>
-          <label class="checkbox-item"><input type="checkbox" id="actRead" /> Read</label>
+          <label class="checkbox-item"><input type="checkbox" id="actRead"   /> Read</label>
         </div>
       </div>
     </div>
 
-    <!-- STEP 3: Users and User Groups -->
+    <!-- STEP 2 -->
+    <div class="step-page" id="step-2">
+      <div class="step-title">Step 2: Trigger</div>
+      <div class="trigger-top">
+        <label>Take Action When</label>
+        <select id="triggerMode">
+          <option>Any of conditions are met (OR)</option>
+          <option>All conditions are met (AND)</option>
+        </select>
+      </div>
+      <div class="conditions-list" id="conditionsList"></div>
+      <div style="display:flex;gap:8px">
+        <button class="ghost-btn" onclick="addCondition(false)">＋ Add Condition</button>
+        <button class="ghost-btn" onclick="addCondition(true)">＋ Add Group</button>
+      </div>
+    </div>
+
+    <!-- STEP 3 -->
     <div class="step-page" id="step-3">
       <div class="step-title">Step 3: Which users are affected</div>
-      <div id="chipsWrapper" style="display:none">
+      <div class="chips-meta" id="chipsWrapper" style="display:none">
         <div class="chips-label" id="chipsLabel">Added (0):</div>
         <div class="chips-row" id="chipsRow"></div>
       </div>
-      <div class="search-wrap">
+      <div class="search-wrap" style="margin-top:12px">
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
           <circle cx="6" cy="6" r="4.5"/><line x1="9.5" y1="9.5" x2="13" y2="13"/>
         </svg>
-        <input class="search-input" id="userSearch" type="text" placeholder="Search users or user groups…" oninput="filterUsers(this.value)" />
+        <input class="search-input" id="userSearch" type="search"
+               placeholder="Search users or user groups…" oninput="filterUsers(this.value)" />
       </div>
       <div class="results-list" id="userResults"></div>
     </div>
 
-    <!-- STEP 4: Summary (read-only) -->
+    <!-- STEP 4 -->
     <div class="step-page" id="step-4">
       <div class="step-title">Summary</div>
 
-      <!-- Step 1 summary -->
       <div class="summary-card">
-        <div class="summary-card-header">
-          <div class="summary-card-header-left">
-            <span class="summary-step-label">Step 1</span>
-            <span class="summary-section-title">Define Your Rule</span>
+        <div class="sc-header">
+          <div class="sc-header-left">
+            <span class="sc-step">Step 1</span>
+            <span class="sc-title">Define Your Rule</span>
           </div>
           <button class="edit-link" onclick="goToStep(1)">Edit</button>
         </div>
-        <div class="summary-card-body">
-          <div class="ro-field">
-            <div class="ro-label">Rule name</div>
-            <div class="ro-value" id="sum-ruleName">—</div>
-          </div>
-          <div class="ro-field">
-            <div class="ro-label">Description</div>
-            <div class="ro-value" id="sum-ruleDesc">—</div>
-          </div>
+        <div class="sc-body">
+          <div class="ro-field"><div class="ro-label">Rule name</div><div class="ro-value" id="sum-ruleName">—</div></div>
+          <div class="ro-field"><div class="ro-label">Description</div><div class="ro-value" id="sum-ruleDesc">—</div></div>
+          <div class="ro-field"><div class="ro-label">Resource</div><div class="ro-value" id="sum-resource">—</div></div>
+          <div class="ro-field"><div class="ro-label">Applicable CI Types</div><div class="ro-pills" id="sum-ciTypes"></div></div>
+          <div class="ro-field"><div class="ro-label">Actions</div><div class="ro-pills" id="sum-actions"></div></div>
         </div>
       </div>
 
-      <!-- Step 2 summary -->
       <div class="summary-card">
-        <div class="summary-card-header">
-          <div class="summary-card-header-left">
-            <span class="summary-step-label">Step 2</span>
-            <span class="summary-section-title">Target Object</span>
+        <div class="sc-header">
+          <div class="sc-header-left">
+            <span class="sc-step">Step 2</span>
+            <span class="sc-title">Trigger</span>
           </div>
           <button class="edit-link" onclick="goToStep(2)">Edit</button>
         </div>
-        <div class="summary-card-body">
-          <div class="ro-field">
-            <div class="ro-label">Resource</div>
-            <div class="ro-value" id="sum-resource">—</div>
-          </div>
-          <div class="ro-field">
-            <div class="ro-label">Applicable CI Types</div>
-            <div class="ro-pills" id="sum-ciTypes"></div>
-          </div>
-          <div class="ro-field">
-            <div class="ro-label">Actions</div>
-            <div class="ro-pills" id="sum-actions"></div>
-          </div>
+        <div class="sc-body">
+          <div class="ro-field"><div class="ro-label">Take Action When</div><div class="ro-value" id="sum-triggerMode">—</div></div>
+          <div class="ro-field"><div class="ro-label">Conditions</div><div id="sum-conditions"></div></div>
         </div>
       </div>
 
-      <!-- Step 3 summary -->
       <div class="summary-card">
-        <div class="summary-card-header">
-          <div class="summary-card-header-left">
-            <span class="summary-step-label">Step 3</span>
-            <span class="summary-section-title">Users and User Groups</span>
+        <div class="sc-header">
+          <div class="sc-header-left">
+            <span class="sc-step">Step 3</span>
+            <span class="sc-title">Users and User Groups</span>
           </div>
           <button class="edit-link" onclick="goToStep(3)">Edit</button>
         </div>
-        <div class="summary-card-body" id="sum-users">
-          <div style="font-size:13px; color:#9ca3af; padding: 8px 0;">No users or groups added.</div>
+        <div class="sc-body" id="sum-users">
+          <div style="color:#9ca3af;padding:6px 0">No users or groups added.</div>
         </div>
       </div>
     </div>
 
-  </div><!-- /content -->
-</div><!-- /main -->
+  </div>
+</div>
 
-<!-- Footer -->
-<div class="footer">
-  <button class="btn btn-cancel" id="btnCancel" onclick="handleCancel()">Cancel</button>
+<div class="footer" id="footer">
+  <button class="btn btn-cancel" onclick="handleCancel()">Cancel</button>
   <div class="footer-right">
-    <button class="btn btn-outline" id="btnBack" onclick="handleBack()" style="display:none">Back</button>
+    <button class="btn btn-outline" id="btnBack" style="display:none" onclick="handleBack()">Back</button>
     <button class="btn btn-primary" id="btnNext" onclick="handleNext()">Next</button>
   </div>
 </div>
 
 <script>
-// ── State ──────────────────────────────────────────────────
+// ── State ─────────────────────────────────────────────────
 let currentStep = 1;
-const TOTAL_STEPS = 4;
+const TOTAL = 4;
 
-const ciTypesAdded = new Set(['Server', 'Hardware', 'Software', 'Network', 'Database', 'Storage', 'Virtual Machine', 'Container', 'Cloud Service']);
-const usersAdded = new Set();
+const ciTypes = new Set(['Server','Hardware','Software','Network','Database','Storage','Virtual Machine','Container','Cloud Service']);
 
+let conditions = [
+  { id:1, resource:'CI Type', operator:'Equals', value:'Windows Server', group:false },
+  { id:2, resource:'CI Type', operator:'Equals', value:'Linux Server',   group:false },
+];
+let condNextId = 3;
+
+const usersAdded = new Set([1, 4]);
 const USER_DATA = [
-  { id: 1, name: 'John Smith',    type: 'User',       initials: 'JS', color: '#3582D8' },
-  { id: 2, name: 'Sarah Johnson', type: 'User',       initials: 'SJ', color: '#3DAD84' },
-  { id: 3, name: 'Windows Group', type: 'User Group', initials: 'WG', color: '#8D59D9' },
-  { id: 4, name: 'IT Admins',     type: 'User Group', initials: 'IA', color: '#D96B29' },
-  { id: 5, name: 'Mike Chen',     type: 'User',       initials: 'MC', color: '#29ABC7' },
-  { id: 6, name: 'Linux Servers', type: 'User Group', initials: 'LS', color: '#C73A67' },
-  { id: 7, name: 'Emma Wilson',   type: 'User',       initials: 'EW', color: '#5B8DD9' },
+  { id:1, name:'John Smith',    type:'User',       initials:'JS', color:'#3582D8' },
+  { id:2, name:'Sarah Johnson', type:'User',       initials:'SJ', color:'#3DAD84' },
+  { id:3, name:'Windows Group', type:'User Group', initials:'WG', color:'#8D59D9' },
+  { id:4, name:'IT Admins',     type:'User Group', initials:'IA', color:'#D96B29' },
+  { id:5, name:'Mike Chen',     type:'User',       initials:'MC', color:'#29ABC7' },
+  { id:6, name:'Linux Servers', type:'User Group', initials:'LS', color:'#C73A67' },
+  { id:7, name:'Emma Wilson',   type:'User',       initials:'EW', color:'#5B8DD9' },
 ];
 
-// Pre-add John Smith and IT Admins to match the Figma design
-usersAdded.add(1);
-usersAdded.add(4);
-
-// ── Init CI Type pills ────────────────────────────────────
+// ── CI Types ──────────────────────────────────────────────
 function renderCiPills() {
-  const container = document.getElementById('ciTypePills');
-  container.innerHTML = '';
-  [...ciTypesAdded].forEach(t => {
+  const c = document.getElementById('ciTypePills');
+  c.innerHTML = '';
+  [...ciTypes].forEach(t => {
     const p = document.createElement('span');
     p.className = 'pill';
-    p.innerHTML = `${t} <span class="remove" onclick="removeCiType('${t}')">×</span>`;
-    container.appendChild(p);
+    p.innerHTML = `${t} <span class="rm" onclick="removeCi('${t}')">×</span>`;
+    c.appendChild(p);
   });
 }
-
-function addCiType(val) {
-  if (!val) return;
-  ciTypesAdded.add(val);
-  renderCiPills();
+function addCiType(v) {
+  if (!v) return; ciTypes.add(v); renderCiPills();
   document.getElementById('ciTypeSelect').value = '';
 }
+function removeCi(v) { ciTypes.delete(v); renderCiPills(); }
 
-function removeCiType(val) {
-  ciTypesAdded.delete(val);
-  renderCiPills();
+// ── Conditions ────────────────────────────────────────────
+const RESOURCES = ['CI Type','Service','Application','Network Device'];
+const OPERATORS = ['Equals','Not Equals','Contains','Does Not Contain','Starts With'];
+
+function renderConditions() {
+  const list = document.getElementById('conditionsList');
+  list.innerHTML = '';
+  conditions.forEach((cond, idx) => {
+    const row = document.createElement('div');
+    row.className = 'cond-row';
+
+    const conn = document.createElement('span');
+    conn.className = 'conn' + (idx === 0 ? ' first' : '');
+    conn.textContent = idx === 0 ? '' : (cond.group ? 'AND' : 'OR');
+    row.appendChild(conn);
+
+    const resSel = document.createElement('select');
+    RESOURCES.forEach(r => { const o=document.createElement('option'); o.value=r; o.textContent=r; if(r===cond.resource)o.selected=true; resSel.appendChild(o); });
+    resSel.onchange = e => { conditions[idx].resource = e.target.value; };
+    row.appendChild(resSel);
+
+    const opSel = document.createElement('select');
+    opSel.className = 'op';
+    OPERATORS.forEach(op => { const o=document.createElement('option'); o.value=op; o.textContent=op; if(op===cond.operator)o.selected=true; opSel.appendChild(o); });
+    opSel.onchange = e => { conditions[idx].operator = e.target.value; };
+    row.appendChild(opSel);
+
+    const valIn = document.createElement('input');
+    valIn.type = 'text'; valIn.className = 'val';
+    valIn.value = cond.value; valIn.placeholder = 'Value…';
+    valIn.oninput = e => { conditions[idx].value = e.target.value; };
+    row.appendChild(valIn);
+
+    const del = document.createElement('button');
+    del.className = 'del-btn'; del.title = 'Remove'; del.innerHTML = '×';
+    del.onclick = () => { conditions.splice(idx, 1); renderConditions(); };
+    row.appendChild(del);
+
+    list.appendChild(row);
+  });
+}
+function addCondition(isGroup) {
+  conditions.push({ id:condNextId++, resource:'CI Type', operator:'Equals', value:'', group:!!isGroup });
+  renderConditions();
 }
 
 // ── Users ─────────────────────────────────────────────────
-function renderUsers(query = '') {
+function renderUsers(query='') {
   const list = document.getElementById('userResults');
-  const q = query.toLowerCase().trim();
-  const filtered = USER_DATA.filter(d =>
-    d.name.toLowerCase().includes(q) || d.type.toLowerCase().includes(q)
-  );
+  const q = query.toLowerCase();
+  const filtered = USER_DATA.filter(d => d.name.toLowerCase().includes(q) || d.type.toLowerCase().includes(q));
   list.innerHTML = '';
   filtered.forEach(item => {
-    const isAdded = usersAdded.has(item.id);
+    const added = usersAdded.has(item.id);
     const row = document.createElement('div');
     row.className = 'result-row';
     row.innerHTML = `
       <div class="avatar" style="background:${item.color}">${item.initials}</div>
       <span class="result-name">${item.name}</span>
-      <span class="badge ${item.type === 'User' ? 'badge-user' : 'badge-group'}">${item.type}</span>
-      <button class="add-btn ${isAdded ? 'added' : ''}" onclick="toggleUser(${item.id})" ${isAdded ? 'disabled' : ''}>
-        ${isAdded ? '✓ Added' : '+ Add'}
-      </button>
-    `;
+      <span class="badge ${item.type==='User'?'badge-user':'badge-group'}">${item.type}</span>
+      <button class="add-btn${added?' added':''}" onclick="toggleUser(${item.id})" ${added?'disabled':''}>
+        ${added?'✓ Added':'+ Add'}
+      </button>`;
     list.appendChild(row);
   });
 }
-
 function toggleUser(id) {
   if (usersAdded.has(id)) return;
   usersAdded.add(id);
   renderUsers(document.getElementById('userSearch').value);
   renderChips();
 }
-
 function removeUser(id) {
   usersAdded.delete(id);
   renderUsers(document.getElementById('userSearch').value);
   renderChips();
 }
-
 function renderChips() {
-  const wrapper = document.getElementById('chipsWrapper');
-  const label = document.getElementById('chipsLabel');
-  const row = document.getElementById('chipsRow');
-  if (usersAdded.size === 0) { wrapper.style.display = 'none'; return; }
-  wrapper.style.display = 'block';
-  label.textContent = `Added (${usersAdded.size}):`;
+  const wrap = document.getElementById('chipsWrapper');
+  const lbl  = document.getElementById('chipsLabel');
+  const row  = document.getElementById('chipsRow');
+  if (usersAdded.size === 0) { wrap.style.display='none'; return; }
+  wrap.style.display = 'block';
+  lbl.textContent = `Added (${usersAdded.size}):`;
   row.innerHTML = '';
   [...usersAdded].forEach(id => {
-    const item = USER_DATA.find(d => d.id === id);
+    const item = USER_DATA.find(d => d.id===id);
     const chip = document.createElement('div');
     chip.className = 'chip';
-    chip.innerHTML = `<span>${item.name}</span><button class="chip-remove" onclick="removeUser(${id})">×</button>`;
+    chip.innerHTML = `<span>${item.name}</span><button class="chip-rm" onclick="removeUser(${id})">×</button>`;
     row.appendChild(chip);
   });
 }
-
 function filterUsers(q) { renderUsers(q); }
 
 // ── Navigation ────────────────────────────────────────────
 function goToStep(n) {
-  if (n < 1 || n > TOTAL_STEPS) return;
-  // Only allow going to completed or current+1 steps
-  if (n > currentStep + 1) return;
-
+  if (n < 1 || n > TOTAL) return;
   document.querySelectorAll('.step-page').forEach(p => p.classList.remove('active'));
   document.getElementById(`step-${n}`).classList.add('active');
 
-  // Update stepper
-  document.querySelectorAll('.step-item').forEach((el, i) => {
-    const s = i + 1;
-    el.classList.remove('active', 'done');
-    if (s < n) { el.classList.add('done'); el.querySelector('.step-dot').textContent = '✓'; }
-    else if (s === n) { el.classList.add('active'); el.querySelector('.step-dot').textContent = ''; }
-    else { el.querySelector('.step-dot').textContent = ''; }
-  });
-
-  // Footer
-  document.getElementById('btnBack').style.display = n > 1 ? 'inline-flex' : 'none';
-  const btnNext = document.getElementById('btnNext');
-  if (n === TOTAL_STEPS) {
-    btnNext.textContent = 'Save';
-    btnNext.className = 'btn btn-success';
-  } else {
-    btnNext.textContent = 'Next';
-    btnNext.className = 'btn btn-primary';
+  for (let i=1; i<=TOTAL; i++) {
+    const si=document.getElementById(`si-${i}`);
+    const sd=document.getElementById(`sd-${i}`);
+    si.classList.remove('active','done');
+    if      (i < n) { si.classList.add('done');   sd.textContent='✓'; }
+    else if (i===n) { si.classList.add('active'); sd.textContent=''; }
+    else             { sd.textContent=''; }
   }
 
-  if (n === TOTAL_STEPS) buildSummary();
+  document.getElementById('btnBack').style.display = n>1 ? 'inline-flex' : 'none';
+  const btn = document.getElementById('btnNext');
+  if (n===TOTAL) { btn.textContent='Save'; btn.className='btn btn-success'; buildSummary(); }
+  else            { btn.textContent='Next'; btn.className='btn btn-primary'; }
   currentStep = n;
 }
 
-function handleNext() {
-  if (currentStep === TOTAL_STEPS) {
-    // Save → show success
-    showSuccess();
-    return;
-  }
-  goToStep(currentStep + 1);
-}
+function handleNext()   { if (currentStep===TOTAL) { showSuccess(); return; } goToStep(currentStep+1); }
+function handleBack()   { goToStep(currentStep-1); }
+function handleCancel() { if (confirm('Discard this new rule?')) location.reload(); }
 
-function handleBack() { goToStep(currentStep - 1); }
-
-function handleCancel() {
-  if (confirm('Discard this new rule?')) {
-    document.querySelector('.step-page.active').innerHTML = '<div style="text-align:center;padding:80px;color:#6b7280;font-size:14px;">Cancelled. You can close this tab.</div>';
-    document.querySelector('.footer').style.display = 'none';
-  }
-}
-
-// ── Build summary ─────────────────────────────────────────
+// ── Summary ───────────────────────────────────────────────
 function buildSummary() {
   document.getElementById('sum-ruleName').textContent = document.getElementById('ruleName').value || '—';
-  document.getElementById('sum-ruleDesc').textContent = document.getElementById('ruleDesc').value || '—';
-  document.getElementById('sum-resource').textContent = document.getElementById('resource').value || '—';
+  document.getElementById('sum-ruleDesc').textContent = document.getElementById('ruleDesc').value  || '—';
+  document.getElementById('sum-resource').textContent = document.getElementById('resource').value  || '—';
 
-  // CI Types
   const ciEl = document.getElementById('sum-ciTypes');
   ciEl.innerHTML = '';
-  const ciArr = [...ciTypesAdded];
-  const show = ciArr.slice(0, 3);
-  const extra = ciArr.length - 3;
-  show.forEach(t => {
-    const p = document.createElement('span');
-    p.className = 'ro-pill'; p.textContent = t;
-    ciEl.appendChild(p);
-  });
-  if (extra > 0) {
-    const p = document.createElement('span');
-    p.className = 'ro-pill more'; p.textContent = `+${extra} more`;
-    ciEl.appendChild(p);
-  }
+  const arr=[...ciTypes], show=arr.slice(0,3), extra=arr.length-3;
+  show.forEach(t => { const p=document.createElement('span'); p.className='ro-pill'; p.textContent=t; ciEl.appendChild(p); });
+  if (extra>0) { const p=document.createElement('span'); p.className='ro-pill more'; p.textContent=`+${extra} more`; ciEl.appendChild(p); }
 
-  // Actions
   const actEl = document.getElementById('sum-actions');
   actEl.innerHTML = '';
-  [['actCreate','Create'],['actDelete','Delete'],['actUpdate','Update'],['actRead','Read']].forEach(([id, label]) => {
+  [['actCreate','Create'],['actDelete','Delete'],['actUpdate','Update'],['actRead','Read']].forEach(([id,lbl]) => {
     if (document.getElementById(id).checked) {
-      const p = document.createElement('span');
-      p.className = 'ro-pill action'; p.textContent = '✓ ' + label;
-      actEl.appendChild(p);
+      const p=document.createElement('span'); p.className='ro-pill action'; p.textContent='✓ '+lbl; actEl.appendChild(p);
     }
   });
 
-  // Users
+  document.getElementById('sum-triggerMode').textContent = document.getElementById('triggerMode').value;
+  const condEl = document.getElementById('sum-conditions');
+  condEl.innerHTML = '';
+  if (conditions.length===0) {
+    condEl.innerHTML='<div style="color:#9ca3af;font-size:12px">No conditions defined.</div>';
+  } else {
+    conditions.forEach((c,i) => {
+      const row=document.createElement('div'); row.className='s-cond-row';
+      row.innerHTML=`<span class="s-conn">${i===0?'':(c.group?'AND':'OR')}</span><span>${c.resource}</span><span style="color:#6b7280;padding:0 4px;font-size:11px">${c.operator}</span><span class="s-val">${c.value||'—'}</span>`;
+      condEl.appendChild(row);
+    });
+  }
+
   const userEl = document.getElementById('sum-users');
   userEl.innerHTML = '';
-  if (usersAdded.size === 0) {
-    userEl.innerHTML = '<div style="font-size:13px;color:#9ca3af;padding:8px 0;">No users or groups added.</div>';
-    return;
-  }
+  if (usersAdded.size===0) { userEl.innerHTML='<div style="color:#9ca3af;padding:6px 0">No users or groups added.</div>'; return; }
   [...usersAdded].forEach(id => {
-    const item = USER_DATA.find(d => d.id === id);
-    const badgeClass = item.type === 'User' ? 'badge-user' : 'badge-group';
-    const row = document.createElement('div');
-    row.className = 'summary-user-row';
-    row.innerHTML = `
-      <div class="avatar" style="background:${item.color};width:28px;height:28px;font-size:10px;font-weight:700;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#fff;">${item.initials}</div>
-      <span style="flex:1;font-size:13px;font-weight:500;color:#111827;">${item.name}</span>
-      <span class="badge ${badgeClass}">${item.type}</span>
-    `;
+    const item=USER_DATA.find(d=>d.id===id);
+    const row=document.createElement('div'); row.className='s-user-row';
+    row.innerHTML=`<div class="avatar" style="background:${item.color};width:28px;height:28px;border-radius:50%;flex-shrink:0">${item.initials}</div><span style="flex:1;font-weight:500;color:#0f1c2b">${item.name}</span><span class="badge ${item.type==='User'?'badge-user':'badge-group'}">${item.type}</span>`;
     userEl.appendChild(row);
   });
 }
 
 function showSuccess() {
-  document.querySelector('.main').innerHTML = `
-    <div class="success-screen" style="width:100%">
+  document.querySelector('.main').innerHTML=`
+    <div class="success-wrap">
       <div class="success-icon">✓</div>
       <div class="success-title">Rule saved successfully!</div>
       <div class="success-sub">"${document.getElementById('ruleName').value}" has been created and is now active.</div>
-      <button class="btn btn-primary" style="margin-top:24px;" onclick="location.reload()">Create another rule</button>
+      <button class="btn btn-primary" style="margin-top:24px" onclick="location.reload()">Create another rule</button>
     </div>`;
-  document.querySelector('.footer').style.display = 'none';
+  document.getElementById('footer').style.display='none';
 }
 
 // ── Init ──────────────────────────────────────────────────
 renderCiPills();
+renderConditions();
 renderUsers();
 renderChips();
 goToStep(1);
