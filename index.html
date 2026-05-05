@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>New Rule – Cumulus CMDB</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #f3f4f6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Top bar ── */
+    .topbar {
+      height: 52px;
+      background: #032d60;
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+    .topbar-logo { width: 32px; height: 32px; background: #fff; border-radius: 4px; display:flex; align-items:center; justify-content:center; }
+    .topbar-logo svg { width: 22px; height: 22px; }
+    .topbar-title { color: #fff; font-size: 14px; font-weight: 600; }
+
+    /* ── Nav bar ── */
+    .navbar {
+      height: 36px;
+      background: #fff;
+      border-bottom: 1px solid #e5e7eb;
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      gap: 0;
+      flex-shrink: 0;
+    }
+    .nav-tab {
+      height: 36px;
+      padding: 0 14px;
+      display: flex;
+      align-items: center;
+      font-size: 13px;
+      color: #3b82f6;
+      border-bottom: 2px solid #3b82f6;
+      cursor: pointer;
+      gap: 6px;
+    }
+    .nav-tab-close { font-size: 15px; color: #6b7280; cursor: pointer; line-height: 1; }
+    .nav-tab-close:hover { color: #ef4444; }
+
+    /* ── Main layout ── */
+    .main {
+      flex: 1;
+      display: flex;
+      overflow: hidden;
+    }
+
+    /* ── Stepper sidebar ── */
+    .sidebar {
+      width: 220px;
+      background: #fff;
+      border-right: 1px solid #e5e7eb;
+      padding: 24px 0;
+      flex-shrink: 0;
+    }
+    .step-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 8px 20px;
+      cursor: pointer;
+      position: relative;
+    }
+    .step-item::before {
+      content: '';
+      position: absolute;
+      left: 29px;
+      top: 32px;
+      width: 2px;
+      height: calc(100% - 4px);
+      background: #d1d5db;
+    }
+    .step-item:last-child::before { display: none; }
+    .step-dot {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 2px solid #d1d5db;
+      background: #fff;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 600;
+      color: #6b7280;
+      z-index: 1;
+      margin-top: 1px;
+      transition: all .2s;
+    }
+    .step-item.done .step-dot {
+      background: #3b82f6;
+      border-color: #3b82f6;
+      color: #fff;
+    }
+    .step-item.active .step-dot {
+      border-color: #3b82f6;
+      background: #fff;
+      box-shadow: 0 0 0 3px rgba(59,130,246,.2);
+    }
+    .step-item.active .step-dot::after {
+      content: '';
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #3b82f6;
+    }
+    .step-item.done::before, .step-item.active::before { background: #3b82f6; }
+    .step-label { font-size: 13px; color: #6b7280; padding-top: 2px; }
+    .step-item.active .step-label { color: #111827; font-weight: 500; }
+    .step-item.done .step-label { color: #374151; }
+
+    /* ── Content area ── */
+    .content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 28px 40px 100px;
+    }
+
+    .step-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: #111827;
+      margin-bottom: 24px;
+    }
+
+    /* ── Form fields ── */
+    .field { margin-bottom: 20px; }
+    .field label {
+      display: block;
+      font-size: 12px;
+      font-weight: 500;
+      color: #374151;
+      margin-bottom: 5px;
+    }
+    .field input, .field textarea, .field select {
+      width: 100%;
+      max-width: 540px;
+      padding: 8px 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 4px;
+      font-size: 13px;
+      color: #111827;
+      outline: none;
+      transition: border-color .15s;
+      font-family: inherit;
+      background: #fff;
+    }
+    .field input:focus, .field textarea:focus, .field select:focus {
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59,130,246,.12);
+    }
+    .field textarea { resize: vertical; min-height: 72px; }
+
+    /* ── CI Type pills ── */
+    .pill-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+    .pill {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 3px 10px;
+      border-radius: 4px;
+      background: #f3f4f6;
+      border: 1px solid #e5e7eb;
+      font-size: 12px; color: #374151;
+    }
+    .pill .remove { cursor: pointer; color: #9ca3af; font-size: 14px; line-height: 1; }
+    .pill .remove:hover { color: #ef4444; }
+
+    /* ── Checkboxes ── */
+    .checkbox-group { display: flex; flex-direction: column; gap: 10px; margin-top: 6px; }
+    .checkbox-item { display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 13px; color: #374151; }
+    .checkbox-item input[type=checkbox] { width: 15px; height: 15px; accent-color: #3b82f6; cursor: pointer; }
+
+    /* ── Search input ── */
+    .search-wrap { position: relative; margin-bottom: 10px; max-width: 540px; }
+    .search-wrap svg { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #9ca3af; }
+    .search-input {
+      width: 100%; height: 36px; padding: 0 12px 0 34px;
+      border: 1px solid #d1d5db; border-radius: 4px;
+      font-size: 13px; outline: none; font-family: inherit;
+    }
+    .search-input:focus { border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59,130,246,.12); }
+
+    /* ── Results list ── */
+    .results-list { border: 1px solid #e5e7eb; border-radius: 4px; overflow: hidden; max-width: 540px; margin-bottom: 14px; }
+    .result-row {
+      display: flex; align-items: center; gap: 10px;
+      padding: 0 12px; height: 44px;
+      background: #fff; border-bottom: 1px solid #f3f4f6;
+      transition: background .1s;
+    }
+    .result-row:last-child { border-bottom: none; }
+    .result-row:nth-child(even) { background: #f9fafb; }
+    .result-row:hover { background: #eff6ff; }
+    .avatar {
+      width: 28px; height: 28px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; font-weight: 700; color: #fff; flex-shrink: 0;
+    }
+    .result-name { flex: 1; font-size: 13px; font-weight: 500; color: #111827; }
+    .badge { font-size: 11px; font-weight: 500; padding: 3px 8px; border-radius: 10px; flex-shrink: 0; }
+    .badge-user { background: #dbeafe; color: #1d4ed8; }
+    .badge-group { background: #ede9fe; color: #6d28d9; }
+    .add-btn {
+      flex-shrink: 0; height: 26px; padding: 0 10px;
+      border-radius: 4px; font-size: 12px; font-weight: 500;
+      cursor: pointer; border: 1px solid #2563eb;
+      background: transparent; color: #2563eb; transition: all .15s; font-family: inherit;
+    }
+    .add-btn:hover:not(:disabled) { background: #2563eb; color: #fff; }
+    .add-btn.added { border-color: #dcfce7; background: #dcfce7; color: #16a34a; cursor: default; }
+
+    /* ── Chips ── */
+    .chips-label { font-size: 12px; font-weight: 500; color: #6b7280; margin-bottom: 6px; }
+    .chips-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+    .chip {
+      display: inline-flex; align-items: center; gap: 5px;
+      height: 24px; padding: 0 8px 0 10px;
+      border-radius: 12px; background: #e2eaf8; border: 1px solid #b3c6e8;
+      font-size: 12px; color: #111827; animation: chipIn .15s ease;
+    }
+    @keyframes chipIn { from { opacity:0; transform: scale(.85); } to { opacity:1; transform: scale(1); } }
+    .chip-remove { background: none; border: none; cursor: pointer; font-size: 15px; line-height: 1; color: #6b7280; padding: 0; display: flex; align-items: center; }
+    .chip-remove:hover { color: #ef4444; }
+
+    /* ── Summary cards ── */
+    .summary-card {
+      border: 1px solid #bcd0ea;
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 16px;
+      max-width: 700px;
+    }
+    .summary-card-header {
+      background: #f0f5fb;
+      border-bottom: 1px solid #dce8f5;
+      padding: 8px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .summary-card-header-left { display: flex; flex-direction: column; }
+    .summary-step-label { font-size: 11px; color: #6b7280; }
+    .summary-section-title { font-size: 13px; font-weight: 600; color: #111827; }
+    .edit-link {
+      font-size: 12px; font-weight: 500; color: #2563eb;
+      background: none; border: none; cursor: pointer; font-family: inherit;
+      text-decoration: none;
+    }
+    .edit-link:hover { text-decoration: underline; }
+    .summary-card-body { padding: 10px 14px 6px; }
+    .ro-field { margin-bottom: 14px; }
+    .ro-field:last-child { margin-bottom: 6px; }
+    .ro-label { font-size: 11px; color: #6b7280; margin-bottom: 3px; }
+    .ro-value { font-size: 13px; font-weight: 500; color: #111827; padding-bottom: 8px; border-bottom: 1px solid #f3f4f6; }
+    .ro-field:last-child .ro-value { border-bottom: none; }
+    .ro-pills { display: flex; flex-wrap: wrap; gap: 6px; padding-bottom: 8px; border-bottom: 1px solid #f3f4f6; }
+    .ro-pill {
+      padding: 3px 10px; border-radius: 4px;
+      background: #f3f4f6; border: 1px solid #e5e7eb;
+      font-size: 12px; color: #374151;
+    }
+    .ro-pill.more { background: #dbeafe; color: #1d4ed8; border-color: #bfdbfe; }
+    .ro-pill.action { background: #dcfce7; color: #16a34a; border-color: #bbf7d0; }
+    .summary-user-row {
+      display: flex; align-items: center; gap: 10px;
+      padding: 8px 0;
+      border-bottom: 1px solid #f3f4f6;
+    }
+    .summary-user-row:last-child { border-bottom: none; }
+
+    /* ── Footer ── */
+    .footer {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      height: 56px; background: #fff;
+      border-top: 1px solid #e5e7eb;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 40px 0 240px;
+      z-index: 100;
+    }
+    .btn {
+      height: 32px; padding: 0 18px;
+      border-radius: 4px; font-size: 13px; font-weight: 500;
+      cursor: pointer; font-family: inherit; transition: all .15s;
+      display: inline-flex; align-items: center; gap: 6px;
+    }
+    .btn-outline { background: #fff; border: 1px solid #d1d5db; color: #374151; }
+    .btn-outline:hover { background: #f9fafb; }
+    .btn-primary { background: #2563eb; border: 1px solid #2563eb; color: #fff; }
+    .btn-primary:hover { background: #1d4ed8; }
+    .btn-success { background: #16a34a; border: 1px solid #16a34a; color: #fff; }
+    .btn-success:hover { background: #15803d; }
+    .btn-cancel { background: #fff; border: 1px solid #e5e7eb; color: #6b7280; }
+    .btn-cancel:hover { background: #f9fafb; color: #374151; }
+
+    .footer-right { display: flex; gap: 10px; }
+
+    /* ── Page hidden ── */
+    .step-page { display: none; }
+    .step-page.active { display: block; }
+
+    /* ── Divider ── */
+    .section-divider { border: none; border-top: 1px solid #e5e7eb; margin: 20px 0; max-width: 540px; }
+
+    /* ── Success state ── */
+    .success-screen {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 80px 40px; text-align: center;
+    }
+    .success-icon {
+      width: 64px; height: 64px; border-radius: 50%;
+      background: #dcfce7; display: flex; align-items: center; justify-content: center;
+      font-size: 32px; margin-bottom: 20px;
+    }
+    .success-title { font-size: 22px; font-weight: 600; color: #111827; margin-bottom: 8px; }
+    .success-sub { font-size: 14px; color: #6b7280; max-width: 380px; line-height: 1.5; }
+  </style>
+</head>
+<body>
+
+<!-- Top bar -->
+<div class="topbar">
+  <div class="topbar-logo">
+    <svg viewBox="0 0 32 32" fill="none"><path d="M16 4C9.373 4 4 9.373 4 16s5.373 12 12 12 12-5.373 12-12S22.627 4 16 4z" fill="#00A1E0"/><path d="M20.5 13.5a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z" fill="#fff"/></svg>
+  </div>
+  <span class="topbar-title">Cumulus CMDB</span>
+</div>
+
+<!-- Nav bar -->
+<div class="navbar">
+  <div class="nav-tab">New Rule <span class="nav-tab-close">×</span></div>
+</div>
+
+<!-- Main -->
+<div class="main">
+  <!-- Stepper sidebar -->
+  <div class="sidebar">
+    <div class="step-item done" data-step="1" onclick="goToStep(1)">
+      <div class="step-dot">✓</div>
+      <div class="step-label">Define Your Rule</div>
+    </div>
+    <div class="step-item" data-step="2" onclick="goToStep(2)">
+      <div class="step-dot"></div>
+      <div class="step-label">Trigger</div>
+    </div>
+    <div class="step-item" data-step="3" onclick="goToStep(3)">
+      <div class="step-dot"></div>
+      <div class="step-label">Users and User Groups</div>
+    </div>
+    <div class="step-item" data-step="4" onclick="goToStep(4)">
+      <div class="step-dot"></div>
+      <div class="step-label">Summary</div>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="content">
+
+    <!-- STEP 1: Define Your Rule -->
+    <div class="step-page active" id="step-1">
+      <div class="step-title">Step 1: Define Rule</div>
+      <div class="field">
+        <label>Rule name</label>
+        <input type="text" id="ruleName" value="Compliance Example 1" />
+      </div>
+      <div class="field">
+        <label>Description</label>
+        <textarea id="ruleDesc">Lorem ipsum</textarea>
+      </div>
+    </div>
+
+    <!-- STEP 2: Define Target Object -->
+    <div class="step-page" id="step-2">
+      <div class="step-title">Step 2: Define Target Object</div>
+      <div class="field">
+        <label>Resource</label>
+        <select id="resource">
+          <option>CI Type</option>
+          <option>Service</option>
+          <option>Application</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Applicable CI Types</label>
+        <select id="ciTypeSelect" onchange="addCiType(this.value)">
+          <option value="">Select classes…</option>
+          <option>Server</option>
+          <option>Hardware</option>
+          <option>Software</option>
+          <option>Network</option>
+          <option>Database</option>
+          <option>Storage</option>
+          <option>Virtual Machine</option>
+          <option>Container</option>
+          <option>Cloud Service</option>
+        </select>
+        <div class="pill-row" id="ciTypePills"></div>
+      </div>
+      <hr class="section-divider" />
+      <div class="field">
+        <label>Action</label>
+        <div class="checkbox-group">
+          <label class="checkbox-item"><input type="checkbox" id="actCreate" checked /> Create</label>
+          <label class="checkbox-item"><input type="checkbox" id="actDelete" /> Delete</label>
+          <label class="checkbox-item"><input type="checkbox" id="actUpdate" /> Update</label>
+          <label class="checkbox-item"><input type="checkbox" id="actRead" /> Read</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 3: Users and User Groups -->
+    <div class="step-page" id="step-3">
+      <div class="step-title">Step 3: Which users are affected</div>
+      <div id="chipsWrapper" style="display:none">
+        <div class="chips-label" id="chipsLabel">Added (0):</div>
+        <div class="chips-row" id="chipsRow"></div>
+      </div>
+      <div class="search-wrap">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="6" cy="6" r="4.5"/><line x1="9.5" y1="9.5" x2="13" y2="13"/>
+        </svg>
+        <input class="search-input" id="userSearch" type="text" placeholder="Search users or user groups…" oninput="filterUsers(this.value)" />
+      </div>
+      <div class="results-list" id="userResults"></div>
+    </div>
+
+    <!-- STEP 4: Summary (read-only) -->
+    <div class="step-page" id="step-4">
+      <div class="step-title">Summary</div>
+
+      <!-- Step 1 summary -->
+      <div class="summary-card">
+        <div class="summary-card-header">
+          <div class="summary-card-header-left">
+            <span class="summary-step-label">Step 1</span>
+            <span class="summary-section-title">Define Your Rule</span>
+          </div>
+          <button class="edit-link" onclick="goToStep(1)">Edit</button>
+        </div>
+        <div class="summary-card-body">
+          <div class="ro-field">
+            <div class="ro-label">Rule name</div>
+            <div class="ro-value" id="sum-ruleName">—</div>
+          </div>
+          <div class="ro-field">
+            <div class="ro-label">Description</div>
+            <div class="ro-value" id="sum-ruleDesc">—</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2 summary -->
+      <div class="summary-card">
+        <div class="summary-card-header">
+          <div class="summary-card-header-left">
+            <span class="summary-step-label">Step 2</span>
+            <span class="summary-section-title">Target Object</span>
+          </div>
+          <button class="edit-link" onclick="goToStep(2)">Edit</button>
+        </div>
+        <div class="summary-card-body">
+          <div class="ro-field">
+            <div class="ro-label">Resource</div>
+            <div class="ro-value" id="sum-resource">—</div>
+          </div>
+          <div class="ro-field">
+            <div class="ro-label">Applicable CI Types</div>
+            <div class="ro-pills" id="sum-ciTypes"></div>
+          </div>
+          <div class="ro-field">
+            <div class="ro-label">Actions</div>
+            <div class="ro-pills" id="sum-actions"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3 summary -->
+      <div class="summary-card">
+        <div class="summary-card-header">
+          <div class="summary-card-header-left">
+            <span class="summary-step-label">Step 3</span>
+            <span class="summary-section-title">Users and User Groups</span>
+          </div>
+          <button class="edit-link" onclick="goToStep(3)">Edit</button>
+        </div>
+        <div class="summary-card-body" id="sum-users">
+          <div style="font-size:13px; color:#9ca3af; padding: 8px 0;">No users or groups added.</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<!-- Footer -->
+<div class="footer">
+  <button class="btn btn-cancel" id="btnCancel" onclick="handleCancel()">Cancel</button>
+  <div class="footer-right">
+    <button class="btn btn-outline" id="btnBack" onclick="handleBack()" style="display:none">Back</button>
+    <button class="btn btn-primary" id="btnNext" onclick="handleNext()">Next</button>
+  </div>
+</div>
+
+<script>
+// ── State ──────────────────────────────────────────────────
+let currentStep = 1;
+const TOTAL_STEPS = 4;
+
+const ciTypesAdded = new Set(['Server', 'Hardware', 'Software', 'Network', 'Database', 'Storage', 'Virtual Machine', 'Container', 'Cloud Service']);
+const usersAdded = new Set();
+
+const USER_DATA = [
+  { id: 1, name: 'John Smith',    type: 'User',       initials: 'JS', color: '#3582D8' },
+  { id: 2, name: 'Sarah Johnson', type: 'User',       initials: 'SJ', color: '#3DAD84' },
+  { id: 3, name: 'Windows Group', type: 'User Group', initials: 'WG', color: '#8D59D9' },
+  { id: 4, name: 'IT Admins',     type: 'User Group', initials: 'IA', color: '#D96B29' },
+  { id: 5, name: 'Mike Chen',     type: 'User',       initials: 'MC', color: '#29ABC7' },
+  { id: 6, name: 'Linux Servers', type: 'User Group', initials: 'LS', color: '#C73A67' },
+  { id: 7, name: 'Emma Wilson',   type: 'User',       initials: 'EW', color: '#5B8DD9' },
+];
+
+// Pre-add John Smith and IT Admins to match the Figma design
+usersAdded.add(1);
+usersAdded.add(4);
+
+// ── Init CI Type pills ────────────────────────────────────
+function renderCiPills() {
+  const container = document.getElementById('ciTypePills');
+  container.innerHTML = '';
+  [...ciTypesAdded].forEach(t => {
+    const p = document.createElement('span');
+    p.className = 'pill';
+    p.innerHTML = `${t} <span class="remove" onclick="removeCiType('${t}')">×</span>`;
+    container.appendChild(p);
+  });
+}
+
+function addCiType(val) {
+  if (!val) return;
+  ciTypesAdded.add(val);
+  renderCiPills();
+  document.getElementById('ciTypeSelect').value = '';
+}
+
+function removeCiType(val) {
+  ciTypesAdded.delete(val);
+  renderCiPills();
+}
+
+// ── Users ─────────────────────────────────────────────────
+function renderUsers(query = '') {
+  const list = document.getElementById('userResults');
+  const q = query.toLowerCase().trim();
+  const filtered = USER_DATA.filter(d =>
+    d.name.toLowerCase().includes(q) || d.type.toLowerCase().includes(q)
+  );
+  list.innerHTML = '';
+  filtered.forEach(item => {
+    const isAdded = usersAdded.has(item.id);
+    const row = document.createElement('div');
+    row.className = 'result-row';
+    row.innerHTML = `
+      <div class="avatar" style="background:${item.color}">${item.initials}</div>
+      <span class="result-name">${item.name}</span>
+      <span class="badge ${item.type === 'User' ? 'badge-user' : 'badge-group'}">${item.type}</span>
+      <button class="add-btn ${isAdded ? 'added' : ''}" onclick="toggleUser(${item.id})" ${isAdded ? 'disabled' : ''}>
+        ${isAdded ? '✓ Added' : '+ Add'}
+      </button>
+    `;
+    list.appendChild(row);
+  });
+}
+
+function toggleUser(id) {
+  if (usersAdded.has(id)) return;
+  usersAdded.add(id);
+  renderUsers(document.getElementById('userSearch').value);
+  renderChips();
+}
+
+function removeUser(id) {
+  usersAdded.delete(id);
+  renderUsers(document.getElementById('userSearch').value);
+  renderChips();
+}
+
+function renderChips() {
+  const wrapper = document.getElementById('chipsWrapper');
+  const label = document.getElementById('chipsLabel');
+  const row = document.getElementById('chipsRow');
+  if (usersAdded.size === 0) { wrapper.style.display = 'none'; return; }
+  wrapper.style.display = 'block';
+  label.textContent = `Added (${usersAdded.size}):`;
+  row.innerHTML = '';
+  [...usersAdded].forEach(id => {
+    const item = USER_DATA.find(d => d.id === id);
+    const chip = document.createElement('div');
+    chip.className = 'chip';
+    chip.innerHTML = `<span>${item.name}</span><button class="chip-remove" onclick="removeUser(${id})">×</button>`;
+    row.appendChild(chip);
+  });
+}
+
+function filterUsers(q) { renderUsers(q); }
+
+// ── Navigation ────────────────────────────────────────────
+function goToStep(n) {
+  if (n < 1 || n > TOTAL_STEPS) return;
+  // Only allow going to completed or current+1 steps
+  if (n > currentStep + 1) return;
+
+  document.querySelectorAll('.step-page').forEach(p => p.classList.remove('active'));
+  document.getElementById(`step-${n}`).classList.add('active');
+
+  // Update stepper
+  document.querySelectorAll('.step-item').forEach((el, i) => {
+    const s = i + 1;
+    el.classList.remove('active', 'done');
+    if (s < n) { el.classList.add('done'); el.querySelector('.step-dot').textContent = '✓'; }
+    else if (s === n) { el.classList.add('active'); el.querySelector('.step-dot').textContent = ''; }
+    else { el.querySelector('.step-dot').textContent = ''; }
+  });
+
+  // Footer
+  document.getElementById('btnBack').style.display = n > 1 ? 'inline-flex' : 'none';
+  const btnNext = document.getElementById('btnNext');
+  if (n === TOTAL_STEPS) {
+    btnNext.textContent = 'Save';
+    btnNext.className = 'btn btn-success';
+  } else {
+    btnNext.textContent = 'Next';
+    btnNext.className = 'btn btn-primary';
+  }
+
+  if (n === TOTAL_STEPS) buildSummary();
+  currentStep = n;
+}
+
+function handleNext() {
+  if (currentStep === TOTAL_STEPS) {
+    // Save → show success
+    showSuccess();
+    return;
+  }
+  goToStep(currentStep + 1);
+}
+
+function handleBack() { goToStep(currentStep - 1); }
+
+function handleCancel() {
+  if (confirm('Discard this new rule?')) {
+    document.querySelector('.step-page.active').innerHTML = '<div style="text-align:center;padding:80px;color:#6b7280;font-size:14px;">Cancelled. You can close this tab.</div>';
+    document.querySelector('.footer').style.display = 'none';
+  }
+}
+
+// ── Build summary ─────────────────────────────────────────
+function buildSummary() {
+  document.getElementById('sum-ruleName').textContent = document.getElementById('ruleName').value || '—';
+  document.getElementById('sum-ruleDesc').textContent = document.getElementById('ruleDesc').value || '—';
+  document.getElementById('sum-resource').textContent = document.getElementById('resource').value || '—';
+
+  // CI Types
+  const ciEl = document.getElementById('sum-ciTypes');
+  ciEl.innerHTML = '';
+  const ciArr = [...ciTypesAdded];
+  const show = ciArr.slice(0, 3);
+  const extra = ciArr.length - 3;
+  show.forEach(t => {
+    const p = document.createElement('span');
+    p.className = 'ro-pill'; p.textContent = t;
+    ciEl.appendChild(p);
+  });
+  if (extra > 0) {
+    const p = document.createElement('span');
+    p.className = 'ro-pill more'; p.textContent = `+${extra} more`;
+    ciEl.appendChild(p);
+  }
+
+  // Actions
+  const actEl = document.getElementById('sum-actions');
+  actEl.innerHTML = '';
+  [['actCreate','Create'],['actDelete','Delete'],['actUpdate','Update'],['actRead','Read']].forEach(([id, label]) => {
+    if (document.getElementById(id).checked) {
+      const p = document.createElement('span');
+      p.className = 'ro-pill action'; p.textContent = '✓ ' + label;
+      actEl.appendChild(p);
+    }
+  });
+
+  // Users
+  const userEl = document.getElementById('sum-users');
+  userEl.innerHTML = '';
+  if (usersAdded.size === 0) {
+    userEl.innerHTML = '<div style="font-size:13px;color:#9ca3af;padding:8px 0;">No users or groups added.</div>';
+    return;
+  }
+  [...usersAdded].forEach(id => {
+    const item = USER_DATA.find(d => d.id === id);
+    const badgeClass = item.type === 'User' ? 'badge-user' : 'badge-group';
+    const row = document.createElement('div');
+    row.className = 'summary-user-row';
+    row.innerHTML = `
+      <div class="avatar" style="background:${item.color};width:28px;height:28px;font-size:10px;font-weight:700;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#fff;">${item.initials}</div>
+      <span style="flex:1;font-size:13px;font-weight:500;color:#111827;">${item.name}</span>
+      <span class="badge ${badgeClass}">${item.type}</span>
+    `;
+    userEl.appendChild(row);
+  });
+}
+
+function showSuccess() {
+  document.querySelector('.main').innerHTML = `
+    <div class="success-screen" style="width:100%">
+      <div class="success-icon">✓</div>
+      <div class="success-title">Rule saved successfully!</div>
+      <div class="success-sub">"${document.getElementById('ruleName').value}" has been created and is now active.</div>
+      <button class="btn btn-primary" style="margin-top:24px;" onclick="location.reload()">Create another rule</button>
+    </div>`;
+  document.querySelector('.footer').style.display = 'none';
+}
+
+// ── Init ──────────────────────────────────────────────────
+renderCiPills();
+renderUsers();
+renderChips();
+goToStep(1);
+</script>
+</body>
+</html>
